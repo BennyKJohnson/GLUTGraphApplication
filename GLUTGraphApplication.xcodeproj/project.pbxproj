@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6F63C6EB1C94F1C600CCE34E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F63C6EA1C94F1C600CCE34E /* main.cpp */; };
+		6F63C6F31C94F1F500CCE34E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F63C6F11C94F1F500CCE34E /* GLUT.framework */; };
+		6F63C6F41C94F1F500CCE34E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F63C6F21C94F1F500CCE34E /* OpenGL.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +27,8 @@
 /* Begin PBXFileReference section */
 		6F63C6E71C94F1C600CCE34E /* GLUTGraphApplication */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GLUTGraphApplication; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F63C6EA1C94F1C600CCE34E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		6F63C6F11C94F1F500CCE34E /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
+		6F63C6F21C94F1F500CCE34E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +36,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F63C6F31C94F1F500CCE34E /* GLUT.framework in Frameworks */,
+				6F63C6F41C94F1F500CCE34E /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,6 +47,8 @@
 		6F63C6DE1C94F1C600CCE34E = {
 			isa = PBXGroup;
 			children = (
+				6F63C6F11C94F1F500CCE34E /* GLUT.framework */,
+				6F63C6F21C94F1F500CCE34E /* OpenGL.framework */,
 				6F63C6E91C94F1C600CCE34E /* GLUTGraphApplication */,
 				6F63C6E81C94F1C600CCE34E /* Products */,
 			);
@@ -161,7 +169,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -198,7 +206,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
