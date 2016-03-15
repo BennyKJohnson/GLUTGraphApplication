@@ -10,6 +10,7 @@
 		6F63C6EB1C94F1C600CCE34E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F63C6EA1C94F1C600CCE34E /* main.cpp */; };
 		6F63C6F31C94F1F500CCE34E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F63C6F11C94F1F500CCE34E /* GLUT.framework */; };
 		6F63C6F41C94F1F500CCE34E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F63C6F21C94F1F500CCE34E /* OpenGL.framework */; };
+		A3EF9E441C96554500C3B053 /* BarChartView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A3EF9E421C96554500C3B053 /* BarChartView.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +30,8 @@
 		6F63C6EA1C94F1C600CCE34E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		6F63C6F11C94F1F500CCE34E /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		6F63C6F21C94F1F500CCE34E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		A3EF9E421C96554500C3B053 /* BarChartView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BarChartView.cpp; sourceTree = "<group>"; };
+		A3EF9E431C96554500C3B053 /* BarChartView.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BarChartView.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +69,8 @@
 			isa = PBXGroup;
 			children = (
 				6F63C6EA1C94F1C600CCE34E /* main.cpp */,
+				A3EF9E421C96554500C3B053 /* BarChartView.cpp */,
+				A3EF9E431C96554500C3B053 /* BarChartView.hpp */,
 			);
 			path = GLUTGraphApplication;
 			sourceTree = "<group>";
@@ -127,6 +132,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F63C6EB1C94F1C600CCE34E /* main.cpp in Sources */,
+				A3EF9E441C96554500C3B053 /* BarChartView.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +251,7 @@
 				6F63C6F01C94F1C600CCE34E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
