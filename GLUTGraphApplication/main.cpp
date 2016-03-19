@@ -11,7 +11,7 @@
 #include <GLUT/GLUT.h>//GLUT Library, will make you life easier
 #include <OpenGL/OpenGL.h>//OpenGL Library
 #include <string>
-#include "BarChartView.hpp"
+#include "PieChartView.hpp"
 
 using namespace std;
 
@@ -19,7 +19,7 @@ using namespace std;
 #define HEIGHT 600;
 #define BORDER 0;
 
-BarChartView *barChart;
+PieChartView *barChart;
 
 enum MenuOption {
     Add = 1,
@@ -89,27 +89,17 @@ void mouseHandler(int button, int state, int x, int y) {
 
 //Now, lets tell it to display some stuff
 void render(void){
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//Clear the buffer
 
-    
-    glBegin(GL_TRIANGLES);//Let us begin drawing some points
-    
-    //Specify the points
-    glColor3f(1, 0, 0);
-    glVertex2f(-0.5,-0.5);
-    
-    glColor3f(0, 1, 0);
-    glVertex2f(0.5,-0.5);
-    
-    glColor3f(0, 0, 1);
-    glVertex2f(0.0, 0.5);
-    
-    glEnd();//Ok we are done specifying points\
-    
-    
+
+    /*
+
+    */
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // Set background color to black and opaque
+    glClear(GL_COLOR_BUFFER_BIT);//Clear the buffer
+    barChart->draw();
     renderBitmapString(0, 0, 0, GLUT_BITMAP_HELVETICA_12, "Graph");
     
-    glutSwapBuffers();
+    glFlush();
 }
 
 void backgroundRender(void) {
@@ -117,7 +107,7 @@ void backgroundRender(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//Clear the buffer
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
-    glutSwapBuffers();
+    glFlush();
 
 }
 
@@ -137,6 +127,29 @@ void initView() {
     
 }
 
+void setOGLProjection(int width, int height) {
+    glViewport(0, 0, width, height);
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    
+    glOrtho(0, width, height, 0, -1, 1);
+    
+    //Back to the modelview so we can draw stuff
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+}
+
+void resize(int width, int height) {
+    
+  //  int width = glutGet(GLUT_WINDOW_WIDTH);
+   // int height = glutGet(GLUT_WINDOW_HEIGHT);
+    
+    setOGLProjection(width, height);
+    
+    
+}
 
 
 void setupSubViews(int mainWindow) {
@@ -163,16 +176,18 @@ void setupSubViews(int mainWindow) {
 int main(int argc, char * argv[]) {
     
     vector<string*> xVals;
-    vector<double> yVals;
-    yVals.push_back(10.0);
-    
-    barChart = new BarChartView(xVals, yVals);
-    
+    vector<int> yVals;
+    yVals.push_back(40);
+    yVals.push_back(40);
+    yVals.push_back(20);
+        
+    barChart = new PieChartView(xVals, yVals);
+
     //Init glut passing some args, if you know C++ you should know we are just passing the args straight thru from main
     glutInit(&argc, argv);
     
     //Specify the Display Mode, this one means there is a single buffer and uses RGB to specify colors
-    glutInitDisplayMode(GLUT_DEPTH| GLUT_DOUBLE |GLUT_RGB);
+   // glutInitDisplayMode(GLUT_DEPTH| GLUT_DOUBLE |GLUT_RGB);
     
     //Set the window size
     glutInitWindowSize(800, 600);
@@ -180,12 +195,17 @@ int main(int argc, char * argv[]) {
     //Where do we want to place the window initially?
     glutInitWindowPosition(100,100);
     
+  //  glViewport(0, 0, 600, 600);   //This sets up the viewport so that the coordinates (0, 0) are at the top left of the window
+    
+    
+    
     
     //Name the window and create it
     int mainWindow = glutCreateWindow("Zoo Graphs");
-    glutDisplayFunc(backgroundRender);
+    glutDisplayFunc(render);
+    glutReshapeFunc(resize);
     
-    setupSubViews(mainWindow);
+    // setupSubViews(mainWindow);
    
     //Start the main loop running, nothing after this will execute for all eternity (right now)
     glutMainLoop();
