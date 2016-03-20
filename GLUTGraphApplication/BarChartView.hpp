@@ -35,7 +35,7 @@ public:
     int graphXOffset;
     int currentDataSet;
     
-    void draw();
+    void draw(CGRect rect);
 };
 
 #endif /* BarChartView_hpp */

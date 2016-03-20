@@ -32,7 +32,7 @@ public:
     std::string *title;
 
     LineChartView(std::vector<std::string*> xVals, std::vector<std::vector<int>> yVals);
-    void draw();
+    void draw(CGRect rect);
     
     int graphYOffset;
     int graphXOffset;

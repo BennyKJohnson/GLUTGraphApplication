@@ -14,9 +14,6 @@
 #include <string>
 #include <iostream>
 
-
-
-
 void drawArc(float x, float y, float radius, float startAngleOuter, float sweepAngleOuter, CGColor color) {
     
     glColor4f(color.r, color.g,color.b,  color.a);
@@ -35,19 +32,14 @@ void drawArc(float x, float y, float radius, float startAngleOuter, float sweepA
         glVertex2f(x,y);//output vertex
     }
     
-    
-    
     glEnd();
-    
-    
-    
     glPopMatrix();
     
 }
 
 
 
-void PieChartView::drawAxis(CGRect rect) {
+void PieChartView::drawLegend(CGRect rect) {
   
     
     std::vector<std::string*>::iterator axisIterator = xVals.begin();
@@ -116,7 +108,7 @@ void PieChartView::draw() {
     
     CGRect rect = CGRectMake(0, 0, 250, 250);
     drawPieChartInRect(rect,values);
-    drawAxis(CGRectMake(300, 125, 200, 200));
+    drawLegend(CGRectMake(300, 125, 200, 200));
     
 }
 

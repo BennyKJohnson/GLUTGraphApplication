@@ -98,15 +98,13 @@ void mouseHandler(int button, int state, int x, int y) {
 
 //Now, lets tell it to display some stuff
 void render(void){
-
     
-    /*
-
-    */
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // Set background color to black and opaque
     glClear(GL_COLOR_BUFFER_BIT);//Clear the buffer
    // barChart->draw();
-    barChart->draw();
+    lineChart->draw(CGRectMake(0, 10, 350, 250));
+    barChart->draw(CGRectMake(450, 10, 250, 250));
+   
     
     //drawCircle(CGRectMake(50, 0, 100, 100), CGColorBlue());
     
@@ -160,8 +158,6 @@ void resize(int width, int height) {
    // int height = glutGet(GLUT_WINDOW_HEIGHT);
     
     setOGLProjection(width, height);
-    
-    
 }
 
 
@@ -227,7 +223,6 @@ Zoo getMogoZoo() {
     bannanas.push_back(200); // 2011
     
     return Zoo(title, bannanas);
-    
 }
 
 
@@ -287,6 +282,9 @@ int main(int argc, char * argv[]) {
     barChart = new BarChartView(xVals, dataSets);
     barChart->dataSetTitles = dataSetTitles;
     
+    lineChart = new LineChartView(xVals,dataSets);
+    lineChart->dataSetTitles = dataSetTitles;
+    
   // barChart = new PieChartView(xVals, yVals);
 
     //Init glut passing some args, if you know C++ you should know we are just passing the args straight thru from main
@@ -310,7 +308,8 @@ int main(int argc, char * argv[]) {
     int mainWindow = glutCreateWindow("Zoo Graphs");
     glutDisplayFunc(render);
     glutReshapeFunc(resize);
-    
+    createContextMenu();
+
     // setupSubViews(mainWindow);
    
     //Start the main loop running, nothing after this will execute for all eternity (right now)

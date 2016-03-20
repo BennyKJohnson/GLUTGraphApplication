@@ -184,20 +184,20 @@ void LineChartView::drawDataSet(std::vector<int> dataSet, CGRect rect, CGColor c
     
 }
 
-void LineChartView::draw() {
-    CGRect graphRect = CGRectMake(0, 50, 400, 300);
-    drawYAxis(graphRect);
-    drawXAxis(graphRect);
+void LineChartView::draw(CGRect rect) {
+    
+    drawYAxis(rect);
+    drawXAxis(rect);
     
     // Iterate through datasets
     int i = 0;
     for (std::vector<std::vector<int>>::iterator dataSetIterator = dataSets.begin(); dataSetIterator != dataSets.end(); dataSetIterator++) {
         
-        drawDataSet(*dataSetIterator, graphRect, colors[i]);
+        drawDataSet(*dataSetIterator, rect, colors[i]);
         i++;
     }
     
-    drawLegend(CGRectMake(450, 100, 100, 100));
+    drawLegend(CGRectMake(rect.width + 10, (rect.height + rect.y) / 2, 100, 100));
     
     
     

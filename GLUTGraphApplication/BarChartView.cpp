@@ -33,8 +33,6 @@ void BarChartView::drawLegend(CGRect rect) {
         
         drawRect(rect, labelColor);
         
-        
-        
         // Draw Label
         glColor4f(0, 0,0, 1.0);
         renderBitmapString(xOffset + 20, yOffset + 10, myString, GLUT_BITMAP_HELVETICA_12);
@@ -61,12 +59,12 @@ void BarChartView::drawXAxis(CGRect rect) {
     int xStep =  (rect.width - graphXOffset) / numberOfHorizontalLines;
     int xAxisValue = 0;
 
-    for (int i = 0; i < numberOfHorizontalLines; i++) {
+    for (int i = 0; i <= numberOfHorizontalLines; i++) {
         
-        float xPosition =  graphXOffset + i * xStep;
+        float xPosition =  rect.x + graphXOffset + i * xStep;
         std::string xAxisString = std::to_string(xAxisValue);
 
-        renderBitmapString(xPosition, rect.height + rect.y + 15, &xAxisString, GLUT_BITMAP_HELVETICA_12);
+        renderBitmapString(xPosition - 10, rect.height + rect.y + 15, &xAxisString, GLUT_BITMAP_HELVETICA_12);
        
         drawLine(CGPointMake(xPosition, rect.y), CGPointMake(xPosition, rect.y + rect.height + 5), 1);
      
@@ -92,13 +90,13 @@ void BarChartView::drawYAxis(CGRect rect) {
         // Draw Axis Label
         std::string *axisString = xVals[i];
         
-        renderBitmapString(0, yPosition + 5, axisString, GLUT_BITMAP_HELVETICA_12);
+        renderBitmapString(rect.x, yPosition - (yStep / 2) + 5, axisString, GLUT_BITMAP_HELVETICA_12);
         
         // Draw Axis Line
         if (i == 0) {
-            drawLine(CGPointMake(graphXOffset, yPosition), CGPointMake(graphXOffset + rect.width, yPosition), 1);
+            drawLine(CGPointMake(graphXOffset + rect.x, yPosition), CGPointMake(graphXOffset + rect.x  + rect.width, yPosition), 1);
         } else {
-            drawLine(CGPointMake(graphXOffset - 5, yPosition), CGPointMake(graphXOffset, yPosition), 1);
+            drawLine(CGPointMake(graphXOffset + rect.x - 5, yPosition), CGPointMake(graphXOffset + rect.x, yPosition), 1);
 
         }
        // yAxisValue += step;
@@ -134,7 +132,7 @@ void BarChartView::drawDataSet(std::vector<int> dataSet, CGRect rect, CGColor co
         // Get Values
         int value1 = *dataSetIterator;
         // Calculate X,Y Position for value1
-        float xPosition =  graphXOffset + xRatio * value1;
+        float xPosition =  (xRatio * value1);
         float yPosition =  (rect.height + rect.y - graphYOffset) - currentYValue - width;
         
         
@@ -155,23 +153,23 @@ void BarChartView::drawDataSet(std::vector<int> dataSet, CGRect rect, CGColor co
     
 }
 
-void BarChartView::draw() {
+void BarChartView::draw(CGRect rect) {
+   
     
-    CGRect graphRect = CGRectMake(0, 0, 400, 300);
-    drawYAxis(graphRect);
-    drawXAxis(graphRect);
+    drawYAxis(rect);
+    drawXAxis(rect);
     currentDataSet = 0;
     
     // Iterate through datasets
     int i = 0;
     for (std::vector<std::vector<int>>::iterator dataSetIterator = dataSets.begin(); dataSetIterator != dataSets.end(); dataSetIterator++) {
         
-        drawDataSet(*dataSetIterator, graphRect, colors[i]);
+        drawDataSet(*dataSetIterator, rect, colors[i]);
         currentDataSet++;
         i++;
     }
     
-    drawLegend(CGRectMake(450, 100, 100, 100));
+    drawLegend(CGRectMake(rect.x + rect.width + 10, (rect.height + rect.y) / 2, 100, 100));
     
 }
 
@@ -179,7 +177,7 @@ BarChartView::BarChartView(std::vector<std::string*> xVals, std::vector<std::vec
     this->xVals = xVals;
     this->dataSets = yVals;
     
-    colors.push_back(CGColorSimpleOrange());
+    colors.push_back(CGColorSimpleCyan());
     colors.push_back(CGColorSimpleBlue());
     
     // Set default offsets
