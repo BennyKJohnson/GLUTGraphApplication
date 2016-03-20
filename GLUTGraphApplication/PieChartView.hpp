@@ -17,6 +17,7 @@
 class PieChartView {
  
     void drawPieChartInRect(CGRect rect, std::vector<int> values);
+    void drawAxis(CGRect rect);
 public:
     
     

@@ -7,6 +7,10 @@
 //
 
 #include "CGGeometry.hpp"
+#include <GLUT/GLUT.h>//GLUT Library, will make you life easier
+#include <OpenGL/OpenGL.h>//OpenGL Library
+#include <string>
+#include <math.h>
 
 CGRect CGRectMake(float x, float y, float width, float height) {
     CGRect rect;
@@ -23,6 +27,162 @@ float degreesToRadians(float degree) {
     
 }
 
+CGPoint getCenter(CGRect rect) {
+    return CGPointMake(rect.x + rect.width / 2, rect.y + rect.height / 2);
+}
+
+void setContextColor(CGColor color) {
+    glColor4f(color.r, color.g,color.b,  color.a);
+}
+
+CGColor CGColorWhite() {
+    CGColor color;
+    color.r = 1;
+    color.b = 1;
+    color.g = 1;
+    color.a = 1;
+    
+    return color;
+}
+
+
+
+// Modified code from http://slabode.exofire.net/circle_draw.shtml
+void drawCircle(CGRect rect, CGColor color)
+{
+    setContextColor(color);
+    
+    int resolution = 48;
+    float radius = fmin(rect.width, rect.height) / 2;
+    CGPoint center = getCenter(rect);
+
+    glPushMatrix();
+    glTranslatef(center.x, center.y,0);
+    
+    glBegin(GL_TRIANGLE_FAN);
+   // int numVectices = sweepAngleOuter - startAngleOuter;
+    
+    glVertex2f(0, 0);
+    
+    for (int i = 0; i <= 360; i++) {
+        float x = radius * cosf(degreesToRadians(i));
+        float y = radius * sinf(degreesToRadians(i));
+        glVertex2f(x,y);//output vertex
+    }
+    
+    
+    
+    glEnd();
+    
+    
+    
+    glPopMatrix();
+    
+    
+    
+    
+    
+    
+    
+    
+    /*
+    glBegin(GL_TRIANGLE_FAN);
+    glVertex2f(0, 0);//output vertex
+
+    
+    for(int ii = 0; ii < resolution; ii++)
+    {
+        float theta = 2.0f * 3.1415926f * float(ii) / float(resolution);//get the current angle
+        
+        float x = radius * cosf(theta);//calculate the x component
+        float y = radius * sinf(theta);//calculate the y component
+        
+        
+        glVertex2f(x + center.x, y + center.y);//output vertex
+        
+    } 
+    glEnd();
+    
+     */
+glPopMatrix();
+
+}
+
+void drawRect(CGRect rect, CGColor color) {
+    
+    glColor4f(color.r, color.g,color.b,  color.a);
+    
+    glPushMatrix();
+    glTranslatef(rect.x, rect.y, 0);
+    
+    glBegin(GL_QUADS); //Begin quadrilateral coordinates
+    //Trapezoid
+    glVertex2i(0, 0); //Upper left
+    
+    
+    glVertex2i(0, rect.height); //Lower left
+    
+    glVertex2i(rect.width, rect.height); //Lower right
+    
+    glVertex2i(rect.width, 0); //Upper Right
+    
+    glEnd(); //End quadrilateral coordinates
+    
+    
+    //glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glPopMatrix();
+    
+}
+
+// Helper function that returns a rect which origin will ensure that the rect is at the center of xy
+CGRect offsetRectToCenterOnOrigin(CGRect rect) {
+    CGRect newRect;
+    newRect.width = rect.width;
+    newRect.height = rect.height;
+    newRect.x =  rect.x - (rect.width / 2);
+    newRect.y =  rect.y - (rect.height / 2);
+    return newRect;
+}
+
+// Returns new rect which is center point equals the center point of rect
+CGRect centerAtPoint(CGPoint center, CGRect rect) {
+    rect.x = center.x - (rect.width / 2);
+    rect.y = center.y - (rect.height / 2);
+    
+    return rect;
+}
+
+
+void renderBitmapString(int x, int y, std::string *string, void *font) {
+    glRasterPos2i(x, y);
+    
+    char *c = new char[256];
+    strcpy(c, string->c_str());
+    //glColor3i(0, 0, 0);
+    
+    
+    for (c ; *c != '\0'; c++) {
+        glutBitmapCharacter(font, *c);
+    }
+}
+
+CGPoint CGPointMake(float x, float y) {
+    CGPoint point;
+    point.x = x;
+    point.y = y;
+    
+    return point;
+}
+
+
+void drawLine(CGPoint fromPoint, CGPoint toPoint, float width) {
+    glLineWidth(width);
+    
+    glBegin(GL_LINES);
+    glVertex2f(fromPoint.x, fromPoint.y);
+    glVertex2f(toPoint.x, toPoint.y);
+    glEnd();
+}
 
 CGColor CGColorMakeWithRGB(int r,int g,int b) {
     
@@ -41,13 +201,26 @@ CGColor CGColorSimpleYellow()
     return CGColorMakeWithRGB(255,244,127);
 }
 
-CGColor CGColorSimpleGreen() {
+CGColor CGColorSimpleCyan() {
     return CGColorMakeWithRGB(190,255,129);
+
+}
+
+CGColor CGColorSimpleGreen() {
+    return CGColorMakeWithRGB(96,241,163);
 }
 
 
 CGColor CGColorSimpleBlue() {
     return CGColorMakeWithRGB(128,232,255);
+}
+
+CGColor CGColorSimpleRed() {
+    return  CGColorMakeWithRGB(255,131,145);
+}
+
+CGColor CGColorSimpleOrange() {
+    return CGColorMakeWithRGB(255,205,129);
 }
 
 CGColor CGColorRed() {
@@ -60,6 +233,15 @@ CGColor CGColorRed() {
     return color;
 }
 
+CGColor CGColorBlack() {
+    CGColor color;
+    color.r = 0;
+    color.b = 0;
+    color.g = 0;
+    color.a = 1;
+    
+    return color;
+}
 
 CGColor CGColorGreen() {
     CGColor color;
@@ -81,6 +263,3 @@ CGColor CGColorBlue() {
     return color;
 }
 
-CGColor CGColorSimpleOrange() {
-    return CGColorMakeWithRGB(255,205,129);
-}

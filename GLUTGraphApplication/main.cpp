@@ -11,7 +11,13 @@
 #include <GLUT/GLUT.h>//GLUT Library, will make you life easier
 #include <OpenGL/OpenGL.h>//OpenGL Library
 #include <string>
+
 #include "PieChartView.hpp"
+#include "LineChartView.hpp"
+#include "BarChartView.hpp"
+
+#include "CGGeometry.hpp"
+#include "Zoo.hpp"
 
 using namespace std;
 
@@ -19,7 +25,10 @@ using namespace std;
 #define HEIGHT 600;
 #define BORDER 0;
 
-PieChartView *barChart;
+PieChartView *pieChart;
+LineChartView *lineChart;
+BarChartView *barChart;
+
 
 enum MenuOption {
     Add = 1,
@@ -90,13 +99,17 @@ void mouseHandler(int button, int state, int x, int y) {
 //Now, lets tell it to display some stuff
 void render(void){
 
-
+    
     /*
 
     */
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // Set background color to black and opaque
     glClear(GL_COLOR_BUFFER_BIT);//Clear the buffer
+   // barChart->draw();
     barChart->draw();
+    
+    //drawCircle(CGRectMake(50, 0, 100, 100), CGColorBlue());
+    
     renderBitmapString(0, 0, 0, GLUT_BITMAP_HELVETICA_12, "Graph");
     
     glFlush();
@@ -173,15 +186,108 @@ void setupSubViews(int mainWindow) {
     
 }
 
+vector<string*> getAvailableYears() {
+    
+    vector<string*> xVals = vector<string*>();
+    
+    std::string year2005 = "2005";
+    std::string year2006 = "2006";
+    std::string year2007 = "2007";
+    std::string year2008 = "2008";
+    std::string year2009 = "2009";
+    std::string year2010 = "2010";
+    std::string year2011 = "2011";
+
+    
+    xVals.push_back(&year2005);
+    xVals.push_back(&year2006);
+    xVals.push_back(&year2007);
+    xVals.push_back(&year2008);
+    xVals.push_back(&year2009);
+    xVals.push_back(&year2010);
+    xVals.push_back(&year2011);
+
+    return xVals;
+    
+}
+
+Zoo getMogoZoo() {
+    
+    std::string title = "Mogo Zoo";
+    
+    // Set Values
+    std::vector<int> bannanas;
+    
+    bannanas.push_back(150); // 2005
+    bannanas.push_back(200); // 2006
+    bannanas.push_back(350); // 2007
+    bannanas.push_back(300); // 2008
+    bannanas.push_back(400); // 2009
+    bannanas.push_back(150); // 2010
+    bannanas.push_back(200); // 2011
+    
+    return Zoo(title, bannanas);
+    
+}
+
+
+Zoo getTarongaZoo() {
+    
+    std::string title = "Taronga Zoo";
+    
+    // Set Values
+    std::vector<int> bannanas;
+    bannanas.push_back(180); // 2005
+    bannanas.push_back(300); // 2006
+    bannanas.push_back(400); // 2007
+    bannanas.push_back(300); // 2008
+    bannanas.push_back(200); // 2009
+    bannanas.push_back(240); // 2010
+    bannanas.push_back(350); // 2011
+    
+    
+    return Zoo(title, bannanas);
+}
+
+
 int main(int argc, char * argv[]) {
     
     vector<string*> xVals;
-    vector<int> yVals;
-    yVals.push_back(40);
-    yVals.push_back(40);
-    yVals.push_back(20);
-        
-    barChart = new PieChartView(xVals, yVals);
+    
+    std::string year2005 = "2005";
+    std::string year2006 = "2006";
+    std::string year2007 = "2007";
+    std::string year2008 = "2008";
+    std::string year2009 = "2009";
+    std::string year2010 = "2010";
+    std::string year2011 = "2011";
+    xVals.push_back(&year2005);
+    xVals.push_back(&year2006);
+    xVals.push_back(&year2007);
+    xVals.push_back(&year2008);
+    xVals.push_back(&year2009);
+    xVals.push_back(&year2010);
+    xVals.push_back(&year2011);
+    
+    vector<vector<int>> dataSets;
+    vector<std::string*> dataSetTitles;
+    
+    // Setup Zoos
+    Zoo mogoZoo = getMogoZoo();
+    Zoo tarongaZoo = getTarongaZoo();
+    
+    //
+    dataSetTitles.push_back(&mogoZoo.title);
+    dataSetTitles.push_back(&tarongaZoo.title);
+
+    dataSets.push_back(mogoZoo.bannanas);
+    dataSets.push_back(tarongaZoo.bannanas);
+
+  //  dataSets.push_back(yVals);
+    barChart = new BarChartView(xVals, dataSets);
+    barChart->dataSetTitles = dataSetTitles;
+    
+  // barChart = new PieChartView(xVals, yVals);
 
     //Init glut passing some args, if you know C++ you should know we are just passing the args straight thru from main
     glutInit(&argc, argv);

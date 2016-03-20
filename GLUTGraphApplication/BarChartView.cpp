@@ -9,62 +9,180 @@
 #include "BarChartView.hpp"
 #include <GLUT/GLUT.h>//GLUT Library, will make you life easier
 #include <OpenGL/OpenGL.h>//OpenGL Library
-#include <math.h>
+#include <iostream>
 
 
 
 
+void BarChartView::drawLegend(CGRect rect) {
+    
+    std::vector<std::string*>::iterator axisIterator = xVals.begin();
+    std::vector<CGColor>::iterator colorIterator = colors.begin();
+    
+    int yOffset = rect.y;
+    int xOffset = rect.x;
+    
+    for (axisIterator = dataSetTitles.begin(); axisIterator != dataSetTitles.end(); axisIterator++) {
+        // Print String
+        std::string *myString = *axisIterator;
+        
+        // Draw Rect for color label
+        CGColor labelColor = *colorIterator;
+        CGRect rect = CGRectMake(xOffset, yOffset, 12, 12);
+        setContextColor(labelColor);
+        
+        drawRect(rect, labelColor);
+        
+        
+        
+        // Draw Label
+        glColor4f(0, 0,0, 1.0);
+        renderBitmapString(xOffset + 20, yOffset + 10, myString, GLUT_BITMAP_HELVETICA_12);
+        
+        yOffset += 20;
+        colorIterator++;
+    }
+    
+}
 
+void BarChartView::drawXAxis(CGRect rect) {
+    
+    // Get the largest Value
+    int maxValue = 500;
+    /*
+     for (int i = 0; i < dataSet.size(); i++) {
+     maxValue = std::max(maxValue, dataSet[i]);
+     }
+     */
+    
+    int step = 100;
+    
+    int numberOfHorizontalLines = (maxValue / step);
+    int xStep =  (rect.width - graphXOffset) / numberOfHorizontalLines;
+    int xAxisValue = 0;
 
+    for (int i = 0; i < numberOfHorizontalLines; i++) {
+        
+        float xPosition =  graphXOffset + i * xStep;
+        std::string xAxisString = std::to_string(xAxisValue);
 
+        renderBitmapString(xPosition, rect.height + rect.y + 15, &xAxisString, GLUT_BITMAP_HELVETICA_12);
+       
+        drawLine(CGPointMake(xPosition, rect.y), CGPointMake(xPosition, rect.y + rect.height + 5), 1);
+     
+        xAxisValue += step;
 
+    }
+}
+
+void BarChartView::drawYAxis(CGRect rect) {
+    glColor3f(0, 0, 0);
+    
+    int numberOfHorizontalLines = xVals.size();
+    int yStep = rect.height / numberOfHorizontalLines;
+    // std::vector<std::string*>::iterator axisIterator = xVals.begin();
+    int yAxisValue = 0;
+    
+    glColor3f(0, 0, 0);
+    
+    for (int i = 0; i < numberOfHorizontalLines; i++) {
+        // Get next y position
+        float yPosition = (rect.y + rect.height) - graphYOffset - i * yStep;
+        
+        // Draw Axis Label
+        std::string *axisString = xVals[i];
+        
+        renderBitmapString(0, yPosition + 5, axisString, GLUT_BITMAP_HELVETICA_12);
+        
+        // Draw Axis Line
+        if (i == 0) {
+            drawLine(CGPointMake(graphXOffset, yPosition), CGPointMake(graphXOffset + rect.width, yPosition), 1);
+        } else {
+            drawLine(CGPointMake(graphXOffset - 5, yPosition), CGPointMake(graphXOffset, yPosition), 1);
+
+        }
+       // yAxisValue += step;
+    }
+
+    
+    
+    
+
+}
+void BarChartView::drawDataSet(std::vector<int> dataSet, CGRect rect, CGColor color) {
+    
+    // Get required Steps
+    // Get Y Step
+    int maxValue = 500;
+    int step = 100;
+    
+    int numberOfHorizontalLines = xVals.size();
+    float yRatio = (rect.height - graphYOffset) / numberOfHorizontalLines;
+    
+    // Get X Step
+    int numberOfVerticalLines =  (maxValue / step);
+    float xRatio =  (rect.width - graphXOffset) / maxValue;
+    int width = yRatio / 2 - 5;
+
+    
+    // Get ratio
+    
+    // Draw Lines
+    int currentYValue = 0;
+    for (std::vector<int>::iterator dataSetIterator = dataSet.begin(); dataSetIterator != dataSet.end(); dataSetIterator++) {
+        
+        // Get Values
+        int value1 = *dataSetIterator;
+        // Calculate X,Y Position for value1
+        float xPosition =  graphXOffset + xRatio * value1;
+        float yPosition =  (rect.height + rect.y - graphYOffset) - currentYValue - width;
+        
+        
+        // drawRect(offsetRectToCenterOnOrigin(CGRectMake(xPosition, yPosition, 5, 5)), CGColorBlue());
+        
+        // Draw Line
+        setContextColor(color);
+        CGRect bar = CGRectMake(graphXOffset + rect.x, yPosition - currentDataSet * width, xPosition, width);
+        drawRect(bar, color);
+        
+        // Draw Rect
+        currentYValue += yRatio;
+        
+        
+    }
+    
+    
+    
+}
 
 void BarChartView::draw() {
-    //CGRect rect = CGRectMake(100, 0, 250, 250);
-    //drawPieChartInRect(rect);
     
+    CGRect graphRect = CGRectMake(0, 0, 400, 300);
+    drawYAxis(graphRect);
+    drawXAxis(graphRect);
+    currentDataSet = 0;
     
-    /*
-    CGRect rect = CGRectMake(0,0,100,100);
-    drawRect(rect, CGColorRed());
+    // Iterate through datasets
+    int i = 0;
+    for (std::vector<std::vector<int>>::iterator dataSetIterator = dataSets.begin(); dataSetIterator != dataSets.end(); dataSetIterator++) {
+        
+        drawDataSet(*dataSetIterator, graphRect, colors[i]);
+        currentDataSet++;
+        i++;
+    }
     
-    CGRect rect2 = CGRectMake(100,0,100,100);
-    drawRect(rect2, CGColorBlue());
-    
-    CGRect rect3 = CGRectMake(200,0,100,100);
-    drawRect(rect3, CGColorGreen());
-
-     */
-
-
-    //drawPieSegmentInRect(CGRectMake(0, 0, 100, 100), 100);
-   // drawCircle(250, 250, 100, 10);
-    /*
-    
-    glBegin(GL_QUADS); //Begin quadrilateral coordinates
-    //Trapezoid
-    glColor3f(1, 0, 0);
-
-    glVertex2f(-0.7f, -1.5f);
-    glColor3f(0, 1, 0);
-
-    glVertex2f(0.0f, -1.5f);
-    glColor3f(0, 1, 0);
-    
-    glVertex2f(-0.7f, -0.5f);
-    glColor3f(0, 1, 0);
-
-    glVertex2f(0.0f, -0.5f);
-     
-    glEnd(); //End quadrilateral coordinates
-    */
+    drawLegend(CGRectMake(450, 100, 100, 100));
     
 }
 
-
-BarChartView::BarChartView(std::vector<std::string*> xVals, std::vector<double> yVals) {
+BarChartView::BarChartView(std::vector<std::string*> xVals, std::vector<std::vector<int>> yVals) {
     this->xVals = xVals;
-    this->yVals = yVals;
+    this->dataSets = yVals;
+    
+    colors.push_back(CGColorSimpleOrange());
+    colors.push_back(CGColorSimpleBlue());
+    
+    // Set default offsets
+    graphXOffset = 50;
+    graphYOffset = 0;
 }
-
-

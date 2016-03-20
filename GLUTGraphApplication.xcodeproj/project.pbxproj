@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F1871BE1C9E586F009B7DCD /* Zoo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F1871BC1C9E586F009B7DCD /* Zoo.cpp */; };
+		6F55EAD81C9E21A300316F9F /* LineChartView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F55EAD61C9E21A300316F9F /* LineChartView.cpp */; };
 		6F63C6EB1C94F1C600CCE34E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F63C6EA1C94F1C600CCE34E /* main.cpp */; };
 		6F63C6F31C94F1F500CCE34E /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F63C6F11C94F1F500CCE34E /* GLUT.framework */; };
 		6F63C6F41C94F1F500CCE34E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F63C6F21C94F1F500CCE34E /* OpenGL.framework */; };
@@ -28,6 +30,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6F1871BC1C9E586F009B7DCD /* Zoo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Zoo.cpp; sourceTree = "<group>"; };
+		6F1871BD1C9E586F009B7DCD /* Zoo.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Zoo.hpp; sourceTree = "<group>"; };
+		6F55EAD61C9E21A300316F9F /* LineChartView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LineChartView.cpp; sourceTree = "<group>"; };
+		6F55EAD71C9E21A300316F9F /* LineChartView.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LineChartView.hpp; sourceTree = "<group>"; };
 		6F63C6E71C94F1C600CCE34E /* GLUTGraphApplication */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GLUTGraphApplication; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F63C6EA1C94F1C600CCE34E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		6F63C6F11C94F1F500CCE34E /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
@@ -78,9 +84,13 @@
 				A3EF9E421C96554500C3B053 /* BarChartView.cpp */,
 				A3EF9E431C96554500C3B053 /* BarChartView.hpp */,
 				6F7DF96C1C9CFD9B0011AAD9 /* PieChartView.cpp */,
+				6F55EAD71C9E21A300316F9F /* LineChartView.hpp */,
+				6F55EAD61C9E21A300316F9F /* LineChartView.cpp */,
 				6F7DF96D1C9CFD9B0011AAD9 /* PieChartView.hpp */,
 				6F7DF96F1C9CFFC10011AAD9 /* CGGeometry.cpp */,
 				6F7DF9701C9CFFC10011AAD9 /* CGGeometry.hpp */,
+				6F1871BC1C9E586F009B7DCD /* Zoo.cpp */,
+				6F1871BD1C9E586F009B7DCD /* Zoo.hpp */,
 			);
 			path = GLUTGraphApplication;
 			sourceTree = "<group>";
@@ -141,9 +151,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F1871BE1C9E586F009B7DCD /* Zoo.cpp in Sources */,
 				6F7DF96E1C9CFD9B0011AAD9 /* PieChartView.cpp in Sources */,
 				6F7DF9711C9CFFC10011AAD9 /* CGGeometry.cpp in Sources */,
 				6F63C6EB1C94F1C600CCE34E /* main.cpp in Sources */,
+				6F55EAD81C9E21A300316F9F /* LineChartView.cpp in Sources */,
 				A3EF9E441C96554500C3B053 /* BarChartView.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
