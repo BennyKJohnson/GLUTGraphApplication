@@ -19,6 +19,8 @@ public:
     std::vector<int> bannanas;
     
     Zoo(std::string title, std::vector<int> bannanas);
+    void incrumentBannanasAtIndex(int index);
+    void decreaseBannanasAtIndex(int index);
 
 };
 

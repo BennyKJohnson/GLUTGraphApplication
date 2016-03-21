@@ -113,7 +113,7 @@ void LineChartView::drawYAxis(CGRect rect) {
 
 void LineChartView::drawXAxis(CGRect rect) {
     
-    int numberOfVerticalLines = xVals.size();
+    int numberOfVerticalLines = static_cast<int>(xVals.size());
     
     int xStep =  (rect.width - graphXOffset) / numberOfVerticalLines;
     for (int i = 0; i < numberOfVerticalLines; i++) {
@@ -135,13 +135,12 @@ void LineChartView::drawDataSet(std::vector<int> dataSet, CGRect rect, CGColor c
     // Get required Steps
     // Get Y Step
     int maxValue = 500;
-    int step = 50;
     
-    int numberOfHorizontalLines = (maxValue / step);
+    //int numberOfHorizontalLines = (maxValue / step);
     float yRatio = (rect.height - graphYOffset) / maxValue;
     
     // Get X Step
-    int numberOfVerticalLines = xVals.size();
+    int numberOfVerticalLines = static_cast<int>(xVals.size());
     int xStep =  (rect.width - graphXOffset) / numberOfVerticalLines;
     
     

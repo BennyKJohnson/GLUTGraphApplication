@@ -52,7 +52,6 @@ void drawCircle(CGRect rect, CGColor color)
 {
     setContextColor(color);
     
-    int resolution = 48;
     float radius = fmin(rect.width, rect.height) / 2;
     CGPoint center = getCenter(rect);
 
@@ -70,41 +69,8 @@ void drawCircle(CGRect rect, CGColor color)
         glVertex2f(x,y);//output vertex
     }
     
-    
-    
     glEnd();
-    
-    
-    
     glPopMatrix();
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-    glBegin(GL_TRIANGLE_FAN);
-    glVertex2f(0, 0);//output vertex
-
-    
-    for(int ii = 0; ii < resolution; ii++)
-    {
-        float theta = 2.0f * 3.1415926f * float(ii) / float(resolution);//get the current angle
-        
-        float x = radius * cosf(theta);//calculate the x component
-        float y = radius * sinf(theta);//calculate the y component
-        
-        
-        glVertex2f(x + center.x, y + center.y);//output vertex
-        
-    } 
-    glEnd();
-    
-     */
-glPopMatrix();
 
 }
 
@@ -128,8 +94,6 @@ void drawRect(CGRect rect, CGColor color) {
     
     glEnd(); //End quadrilateral coordinates
     
-    
-    //glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     glPopMatrix();
     
 }
@@ -152,17 +116,19 @@ CGRect centerAtPoint(CGPoint center, CGRect rect) {
     return rect;
 }
 
-
 void renderBitmapString(int x, int y, std::string *string, void *font) {
+    // Set point to draw string
     glRasterPos2i(x, y);
     
+    // Copy string into new CString
     char *c = new char[256];
     strcpy(c, string->c_str());
-    //glColor3i(0, 0, 0);
     
-    
-    for (c ; *c != '\0'; c++) {
+    // Iterate through each character of string
+    while (*c != '\0') {
+        // Draw individual character
         glutBitmapCharacter(font, *c);
+        c++;
     }
 }
 
@@ -176,8 +142,10 @@ CGPoint CGPointMake(float x, float y) {
 
 
 void drawLine(CGPoint fromPoint, CGPoint toPoint, float width) {
+    // Set line width
     glLineWidth(width);
     
+    // Draw line
     glBegin(GL_LINES);
     glVertex2f(fromPoint.x, fromPoint.y);
     glVertex2f(toPoint.x, toPoint.y);
@@ -196,14 +164,12 @@ CGColor CGColorMakeWithRGB(int r,int g,int b) {
 }
 
 
-CGColor CGColorSimpleYellow()
-{
+CGColor CGColorSimpleYellow() {
     return CGColorMakeWithRGB(255,244,127);
 }
 
 CGColor CGColorSimpleCyan() {
     return CGColorMakeWithRGB(190,255,129);
-
 }
 
 CGColor CGColorSimpleGreen() {

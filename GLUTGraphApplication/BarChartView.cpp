@@ -11,9 +11,6 @@
 #include <OpenGL/OpenGL.h>//OpenGL Library
 #include <iostream>
 
-
-
-
 void BarChartView::drawLegend(CGRect rect) {
     
     std::vector<std::string*>::iterator axisIterator = xVals.begin();
@@ -74,14 +71,12 @@ void BarChartView::drawXAxis(CGRect rect) {
 }
 
 void BarChartView::drawYAxis(CGRect rect) {
-    glColor3f(0, 0, 0);
     
-    int numberOfHorizontalLines = xVals.size();
+    int numberOfHorizontalLines = static_cast<int>(xVals.size());
     int yStep = rect.height / numberOfHorizontalLines;
-    // std::vector<std::string*>::iterator axisIterator = xVals.begin();
-    int yAxisValue = 0;
-    
-    glColor3f(0, 0, 0);
+  
+    // Set color to black for axis lines and text
+    setContextColor(CGColorBlack());
     
     for (int i = 0; i < numberOfHorizontalLines; i++) {
         // Get next y position
@@ -99,26 +94,20 @@ void BarChartView::drawYAxis(CGRect rect) {
             drawLine(CGPointMake(graphXOffset + rect.x - 5, yPosition), CGPointMake(graphXOffset + rect.x, yPosition), 1);
 
         }
-       // yAxisValue += step;
     }
-
-    
-    
-    
-
 }
+
 void BarChartView::drawDataSet(std::vector<int> dataSet, CGRect rect, CGColor color) {
     
     // Get required Steps
     // Get Y Step
     int maxValue = 500;
-    int step = 100;
     
-    int numberOfHorizontalLines = xVals.size();
+    int numberOfHorizontalLines = static_cast<int>(xVals.size());
     float yRatio = (rect.height - graphYOffset) / numberOfHorizontalLines;
     
     // Get X Step
-    int numberOfVerticalLines =  (maxValue / step);
+   // int numberOfVerticalLines =  (maxValue / step);
     float xRatio =  (rect.width - graphXOffset) / maxValue;
     int width = yRatio / 2 - 5;
 
@@ -136,39 +125,35 @@ void BarChartView::drawDataSet(std::vector<int> dataSet, CGRect rect, CGColor co
         float yPosition =  (rect.height + rect.y - graphYOffset) - currentYValue - width;
         
         
-        // drawRect(offsetRectToCenterOnOrigin(CGRectMake(xPosition, yPosition, 5, 5)), CGColorBlue());
-        
-        // Draw Line
+        // Set bar color
         setContextColor(color);
+        // Set bar coordinate and size
         CGRect bar = CGRectMake(graphXOffset + rect.x, yPosition - currentDataSet * width, xPosition, width);
+        // Draw bar
         drawRect(bar, color);
         
-        // Draw Rect
+        // incrument y value
         currentYValue += yRatio;
-        
-        
     }
-    
-    
-    
 }
 
 void BarChartView::draw(CGRect rect) {
    
-    
+    // Draw XY axis
     drawYAxis(rect);
     drawXAxis(rect);
-    currentDataSet = 0;
+    
     
     // Iterate through datasets
-    int i = 0;
+    currentDataSet = 0;
     for (std::vector<std::vector<int>>::iterator dataSetIterator = dataSets.begin(); dataSetIterator != dataSets.end(); dataSetIterator++) {
         
-        drawDataSet(*dataSetIterator, rect, colors[i]);
+        drawDataSet(*dataSetIterator, rect, colors[currentDataSet]);
+        // Incrument current dataset, important for drawDataSet
         currentDataSet++;
-        i++;
     }
     
+    // Draw Legend for graph
     drawLegend(CGRectMake(rect.x + rect.width + 10, (rect.height + rect.y) / 2, 100, 100));
     
 }
@@ -177,6 +162,7 @@ BarChartView::BarChartView(std::vector<std::string*> xVals, std::vector<std::vec
     this->xVals = xVals;
     this->dataSets = yVals;
     
+    // set default color scheme
     colors.push_back(CGColorSimpleCyan());
     colors.push_back(CGColorSimpleBlue());
     

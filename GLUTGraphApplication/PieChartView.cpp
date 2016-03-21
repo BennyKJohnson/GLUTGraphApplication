@@ -8,8 +8,8 @@
 
 #include "PieChartView.hpp"
 #include "CGGeometry.hpp"
-#include <GLUT/GLUT.h>//GLUT Library, will make you life easier
-#include <OpenGL/OpenGL.h>//OpenGL Library
+#include <GLUT/GLUT.h> //GLUT Library
+#include <OpenGL/OpenGL.h> //OpenGL Library
 #include <math.h>
 #include <string>
 #include <iostream>
@@ -22,7 +22,6 @@ void drawArc(float x, float y, float radius, float startAngleOuter, float sweepA
     glTranslatef(x, y,0);
     
     glBegin(GL_TRIANGLE_FAN);
-    int numVectices = sweepAngleOuter - startAngleOuter;
     
     glVertex2f(0, 0);
     
@@ -104,8 +103,6 @@ void PieChartView::drawPieChartInRect(CGRect rect, std::vector<int> values) {
 
 void PieChartView::draw() {
     
-   
-    
     CGRect rect = CGRectMake(0, 0, 250, 250);
     drawPieChartInRect(rect,values);
     drawLegend(CGRectMake(300, 125, 200, 200));
@@ -128,20 +125,5 @@ PieChartView::PieChartView(std::vector<std::string*> vals, std::vector<int> yVal
     
   //  this->xVals =  std::vector<std::string *>();
     this->xVals = vals;
-    /*
-    std::string year2005 = "2005";
-    std::string year2006 = "2006";
-    std::string year2007 = "2007";
-    std::string year2008 = "2008";
-    std::string year2009 = "2009";
-    std::string year2010 = "2010";
-    std::string year2011 = "2011";
-    
-    
-    xVals.push_back(&year2005);
-    xVals.push_back(&year2006);
-    xVals.push_back(&year2007);
-    
-   */
     this->values = yVals;
 }

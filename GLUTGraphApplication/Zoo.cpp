@@ -16,3 +16,10 @@ Zoo::Zoo(std::string title, std::vector<int> bannanas) {
 
 }
 
+void Zoo::incrumentBannanasAtIndex(int index) {
+    bannanas[index] += 100;
+}
+
+void Zoo::decreaseBannanasAtIndex(int index) {
+    bannanas[index] -= 100;
+}

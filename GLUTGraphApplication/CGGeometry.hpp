@@ -1,7 +1,7 @@
 //
 //  CGGeometry.hpp
 //  GLUTGraphApplication
-//
+//  Helper structs and methods for 2D drawing in OpenGL
 //  Created by Benjamin Johnson on 19/03/2016.
 //  Copyright © 2016 Benjamin Johnson. All rights reserved.
 //
@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <string>
 
+// Simple struct for a rectangle area represented by x,y and width and height
 typedef struct CGRect {
     float x;
     float y;
@@ -19,7 +20,18 @@ typedef struct CGRect {
     float height;
 } CGRect;
 
+// Returns a rectangle with the coordinate and size
+CGRect CGRectMake(float x, float y, float width, float height);
 
+// struct to represent a coordinate
+typedef struct CGPoint {
+    float x;
+    float y;
+} CGPoint;
+
+CGPoint CGPointMake(float x, float y);
+
+// Simple struct for color rgba values
 typedef struct CGColor {
     float r;
     float g;
@@ -27,42 +39,45 @@ typedef struct CGColor {
     float a;
 } CGColor;
 
-typedef struct CGPoint {
-    float x;
-    float y;
-} CGPoint;
+// Convenience Constructor with rgb
+CGColor CGColorMakeWithRGB(int r,int g,int b);
 
+// Sets OpenGL current color to CGColor values
+void setContextColor(CGColor color);
 
-CGRect CGRectMake(float x, float y, float width, float height);
+// Convenience Init for colors
+// Basic colors
 CGColor CGColorRed();
 CGColor CGColorBlue();
 CGColor CGColorGreen();
 CGColor CGColorBlack();
 CGColor CGColorWhite();
 
+// Colors for main color scheme
 CGColor CGColorSimpleCyan();
-
-CGColor CGColorMakeWithRGB(int r,int g,int b);
-
 CGColor CGColorSimpleYellow();
-
 CGColor CGColorSimpleOrange();
 CGColor CGColorSimpleGreen();
 CGColor CGColorSimpleRed();
-
-
 CGColor CGColorSimpleBlue();
+
+// Converts degrees to radians
 float degreesToRadians(float degree);
-CGPoint CGPointMake(float x, float y);
+
 CGPoint getCenter(CGRect rect);
 
+// Moves rect to center on its original origin
 CGRect offsetRectToCenterOnOrigin(CGRect rect);
 
+// Draw Helper Methods
 void drawLine(CGPoint fromPoint, CGPoint toPoint, float lineWidth);
+// Draws Circle within rect with color
 void drawCircle(CGRect rect, CGColor color);
+// Draws rectangle of color within the coordinate and size
 void drawRect(CGRect rect, CGColor color);
+// Draws string at x,y with font
 void renderBitmapString(int x, int y, std::string *string, void *font);
-void setContextColor(CGColor color);
+
 CGRect centerAtPoint(CGPoint center, CGRect rect) ;
 
 

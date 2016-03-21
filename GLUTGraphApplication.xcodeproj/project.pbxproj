@@ -80,19 +80,27 @@
 		6F63C6E91C94F1C600CCE34E /* GLUTGraphApplication */ = {
 			isa = PBXGroup;
 			children = (
+				A3C696C71C9F47C3008A5505 /* Graphs */,
 				6F63C6EA1C94F1C600CCE34E /* main.cpp */,
-				A3EF9E421C96554500C3B053 /* BarChartView.cpp */,
-				A3EF9E431C96554500C3B053 /* BarChartView.hpp */,
-				6F7DF96D1C9CFD9B0011AAD9 /* PieChartView.hpp */,
-				6F7DF96C1C9CFD9B0011AAD9 /* PieChartView.cpp */,
-				6F55EAD71C9E21A300316F9F /* LineChartView.hpp */,
-				6F55EAD61C9E21A300316F9F /* LineChartView.cpp */,
-				6F7DF96F1C9CFFC10011AAD9 /* CGGeometry.cpp */,
 				6F7DF9701C9CFFC10011AAD9 /* CGGeometry.hpp */,
+				6F7DF96F1C9CFFC10011AAD9 /* CGGeometry.cpp */,
 				6F1871BC1C9E586F009B7DCD /* Zoo.cpp */,
 				6F1871BD1C9E586F009B7DCD /* Zoo.hpp */,
 			);
 			path = GLUTGraphApplication;
+			sourceTree = "<group>";
+		};
+		A3C696C71C9F47C3008A5505 /* Graphs */ = {
+			isa = PBXGroup;
+			children = (
+				A3EF9E431C96554500C3B053 /* BarChartView.hpp */,
+				A3EF9E421C96554500C3B053 /* BarChartView.cpp */,
+				6F7DF96D1C9CFD9B0011AAD9 /* PieChartView.hpp */,
+				6F7DF96C1C9CFD9B0011AAD9 /* PieChartView.cpp */,
+				6F55EAD71C9E21A300316F9F /* LineChartView.hpp */,
+				6F55EAD61C9E21A300316F9F /* LineChartView.cpp */,
+			);
+			name = Graphs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
