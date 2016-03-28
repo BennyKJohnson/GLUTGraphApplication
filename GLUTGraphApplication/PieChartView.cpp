@@ -8,15 +8,21 @@
 
 #include "PieChartView.hpp"
 #include "CGGeometry.hpp"
-#include <GLUT/GLUT.h> //GLUT Library
-#include <OpenGL/OpenGL.h> //OpenGL Library
 #include <math.h>
 #include <string>
 #include <iostream>
 
+#ifdef __APPLE__
+#include <GLUT/GLUT.h> //GLUT Library, will make you life easier
+#include <OpenGL/OpenGL.h> //OpenGL Library
+#elif defined _WIN32 || defined _WIN64
+#    include <GL\glut.h>
+#endif
+
+
 void drawArc(float x, float y, float radius, float startAngleOuter, float sweepAngleOuter, CGColor color) {
     
-    glColor4f(color.r, color.g,color.b,  color.a);
+    setContextColor(color);
     
     glPushMatrix();
     glTranslatef(x, y,0);
@@ -36,11 +42,8 @@ void drawArc(float x, float y, float radius, float startAngleOuter, float sweepA
     
 }
 
-
-
 void PieChartView::drawLegend(CGRect rect) {
   
-    
     std::vector<std::string*>::iterator axisIterator = xVals.begin();
     std::vector<CGColor>::iterator colorIterator = colors.begin();
     

@@ -7,9 +7,15 @@
 //
 
 #include <iostream>
+
+#include <string>
+
+#ifdef __APPLE__
 #include <GLUT/GLUT.h> //GLUT Library, will make you life easier
 #include <OpenGL/OpenGL.h> //OpenGL Library
-#include <string>
+#elif defined _WIN32 || defined _WIN64
+#    include <GL\glut.h>
+#endif
 
 #include "PieChartView.hpp"
 #include "LineChartView.hpp"
@@ -48,18 +54,18 @@ void deinit() {
     delete tarongaZoo;
 }
 
-void keyboardHandler(unsigned char c, int x, int y) {
+void keyboardHandler(unsigned char key, int x, int y) {
     // Escape
-    cout << "Key pressed: " << c << endl;
-    if (c == 27) {
+    cout << "Key pressed: " << key << endl;
+    if (key == 27) {
         // Exit program
         deinit();
         exit(0);
         
     // 1 - 7
-    } else if(c > 48 && c < 56) {
-        int normalizedDataIndex = c - 48 - 1;
-        int selectedYearIndex = c - 48 - 1 + 2005;
+    } else if(key > 48 && key < 56) {
+        int normalizedDataIndex = key - 48 - 1;
+        int selectedYearIndex = key - 48 - 1 + 2005;
         selectedYearIndex = normalizedDataIndex;
         
         cout << selectedZoo->title << " year: " << selectedYearIndex << endl;
@@ -72,27 +78,27 @@ void windowShouldRedraw() {
 }
 
 
-void specialKeyboardHandler(int c, int x, int y) {
+void specialKeyboardHandler(int key, int x, int y) {
     
-    if(c == GLUT_KEY_F1) {
-        cout << "Selected Taronga Zoo";
-        selectedZoo = mogoZoo;
-        
-    } else if (c == GLUT_KEY_F2) {
-        cout << "Selected Mogo Zoo";
-        selectedZoo = tarongaZoo;
-    } else if (c == GLUT_KEY_UP) {
-        
-        selectedZoo->incrumentBannanasAtIndex(selectedYearIndex);
-        windowShouldRedraw();
-        cout << "Incrument bannanas" << endl;
-    } else if (c == GLUT_KEY_DOWN) {
-        selectedZoo->decreaseBannanasAtIndex(selectedYearIndex);
-        windowShouldRedraw();
-        cout << "Decrease bannanas" << endl;
-
+    switch (key) {
+        case GLUT_KEY_F1:
+            cout << "Selected Taronga Zoo";
+            selectedZoo = mogoZoo;
+            break;
+        case GLUT_KEY_F2:
+            cout << "Selected Mogo Zoo";
+            selectedZoo = tarongaZoo;
+        case GLUT_KEY_DOWN:
+            selectedZoo->decreaseBannanasAtIndex(selectedYearIndex);
+            windowShouldRedraw();
+            cout << "Decrease bannanas" << endl;
+        case GLUT_KEY_UP:
+            selectedZoo->incrumentBannanasAtIndex(selectedYearIndex);
+            windowShouldRedraw();
+            cout << "Incrument bannanas" << endl;
+        default:
+            break;
     }
-
 }
 
 void contextMenuHandler(int value) {
@@ -130,17 +136,6 @@ void createContextMenu() {
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
-void mouseHandler(int button, int state, int x, int y) {
-    /*
-    if(button == GLUT_RIGHT_BUTTON) {
-        // Create Menu
-        
-        
-        exit(0);
-    }
-     */
-}
-
 
 void render(void){
     
@@ -157,30 +152,11 @@ void render(void){
     glFlush();
 }
 
-void backgroundRender(void) {
-    
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);//Clear the buffer
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-    glFlush();
-
-}
-
-void initView() {
-    
-    //Set the callback function, will be called as needed
-    glutDisplayFunc(render);
-    
-    // Setup Keyboard Handler
-    glutKeyboardFunc(keyboardHandler);
-    
-    // Setup Mouse Handler
-    glutMouseFunc(mouseHandler);
-    
-    // Create Context Menu for view
-    createContextMenu();
+void zooMenuClicked(int i) {
     
 }
+
+
 
 void setOGLProjection(int width, int height) {
     glViewport(0, 0, width, height);
@@ -266,9 +242,19 @@ Zoo* getTarongaZoo() {
     return new Zoo(title, bannanas);
 }
 
-
-int main(int argc, char * argv[]) {
+void initOpenGL() {
     
+    glutDisplayFunc(render);
+    glutReshapeFunc(resize);
+    glutKeyboardFunc(keyboardHandler);
+    glutSpecialFunc(specialKeyboardHandler);
+    
+    //  Setup Menu
+    createContextMenu();
+    
+}
+
+void setupGraphs() {
     vector<string*> xVals;
     
     std::string year2005 = "2005";
@@ -296,24 +282,27 @@ int main(int argc, char * argv[]) {
     selectedZoo = mogoZoo;
     selectedYearIndex = 0;
     
-    //
     dataSetTitles.push_back(&mogoZoo->title);
     dataSetTitles.push_back(&tarongaZoo->title);
-
-    dataSets.push_back(mogoZoo->bannanas);
-    dataSets.push_back(tarongaZoo->bannanas);
-
-  //  dataSets.push_back(yVals);
+    
+    dataSets.push_back(mogoZoo->bananas);
+    dataSets.push_back(tarongaZoo->bananas);
+    
     barChart = new BarChartView(xVals, dataSets);
     barChart->dataSetTitles = dataSetTitles;
     
     lineChart = new LineChartView(xVals,dataSets);
     lineChart->dataSetTitles = dataSetTitles;
-    
-  // barChart = new PieChartView(xVals, yVals);
 
-    //Init glut passing some args, if you know C++ you should know we are just passing the args straight thru from main
-    glutInit(&argc, argv);
+}
+
+int main(int argc, char * argv[]) {
+    
+    
+    #ifdef __APPLE__
+        //Init glut passing some args
+        glutInit(&argc, argv);
+    #endif
     
     //Specify the Display Mode, this one means there is a single buffer and uses RGB to specify colors
    // glutInitDisplayMode(GLUT_DEPTH| GLUT_DOUBLE |GLUT_RGB);
@@ -324,19 +313,11 @@ int main(int argc, char * argv[]) {
     //Where do we want to place the window initially?
     glutInitWindowPosition(100,100);
     
-  //  glViewport(0, 0, 600, 600);   //This sets up the viewport so that the coordinates (0, 0) are at the top left of the window
-    
     //Name the window and create it
     mainWindow = glutCreateWindow("Zoo Graphs");
-    glutDisplayFunc(render);
-    glutReshapeFunc(resize);
-    glutKeyboardFunc(keyboardHandler);
-    glutSpecialFunc(specialKeyboardHandler);
+    setupGraphs();
+    initOpenGL();
     
-  //  glutSpecialFunc(keyboardHandler);
-    createContextMenu();
-
-    // setupSubViews(mainWindow);
    
     //Start the main loop running, nothing after this will execute for all eternity (right now)
     glutMainLoop();

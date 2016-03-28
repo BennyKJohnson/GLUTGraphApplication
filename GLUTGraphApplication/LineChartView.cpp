@@ -7,9 +7,15 @@
 //
 
 #include "LineChartView.hpp"
-#include <GLUT/GLUT.h>//GLUT Library, will make you life easier
-#include <OpenGL/OpenGL.h>//OpenGL Library
 #include <iostream>
+
+#ifdef __APPLE__
+#include <GLUT/GLUT.h> //GLUT Library, will make you life easier
+#include <OpenGL/OpenGL.h> //OpenGL Library
+#elif defined _WIN32 || defined _WIN64
+#    include <GL\glut.h>
+#endif
+
 
 void LineChartView::drawCircles() {
     
@@ -80,12 +86,7 @@ void LineChartView::drawLegend(CGRect rect) {
 
 void LineChartView::drawYAxis(CGRect rect) {
     // Get the largest Value
-    int maxValue = 500;
-    /*
-    for (int i = 0; i < dataSet.size(); i++) {
-        maxValue = std::max(maxValue, dataSet[i]);
-    }
-     */
+    int maxValue = maximumValue();
     
     int step = 50;
     
@@ -116,6 +117,7 @@ void LineChartView::drawXAxis(CGRect rect) {
     int numberOfVerticalLines = static_cast<int>(xVals.size());
     
     int xStep =  (rect.width - graphXOffset) / numberOfVerticalLines;
+    
     for (int i = 0; i < numberOfVerticalLines; i++) {
         std::string *axisString = xVals[i];
         
@@ -134,7 +136,7 @@ void LineChartView::drawDataSet(std::vector<int> dataSet, CGRect rect, CGColor c
 
     // Get required Steps
     // Get Y Step
-    int maxValue = 500;
+    int maxValue = maximumValue();
     
     //int numberOfHorizontalLines = (maxValue / step);
     float yRatio = (rect.height - graphYOffset) / maxValue;
@@ -152,7 +154,6 @@ void LineChartView::drawDataSet(std::vector<int> dataSet, CGRect rect, CGColor c
         
         // Get Values
         int value1 = *dataSetIterator;
-        
         dataSetIterator++;
         
         int value2 = *dataSetIterator;
@@ -169,14 +170,15 @@ void LineChartView::drawDataSet(std::vector<int> dataSet, CGRect rect, CGColor c
         
         CGRect circleRect = offsetRectToCenterOnOrigin(CGRectMake(xPosition, yPosition, 12, 12));
         
-        
-       // drawRect(offsetRectToCenterOnOrigin(CGRectMake(xPosition, yPosition, 5, 5)), CGColorBlue());
-        
         // Draw Line
-        setContextColor(color);
-        drawLine(CGPointMake(xPosition, yPosition), CGPointMake(x2Position, y2Position), 3);
+        if (currentXValue < dataSet.size()) {
+            setContextColor(color);
+            drawLine(CGPointMake(xPosition, yPosition), CGPointMake(x2Position, y2Position), 3);
+
+        }
         drawDataPoint(circleRect, color, 5);
 
+        
 
     }
     
@@ -197,9 +199,4 @@ void LineChartView::draw(CGRect rect) {
     }
     
     drawLegend(CGRectMake(rect.width + 10, (rect.height + rect.y) / 2, 100, 100));
-    
-    
-    
-    
-    
 }

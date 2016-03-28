@@ -13,8 +13,9 @@
 #include "CGGeometry.hpp"
 #include <string.h>
 #include <vector>
+#include "Chart.hpp"
 
-class LineChartView {
+class LineChartView: public Chart {
     
     void drawCircles();
     void drawYAxis(CGRect rect);

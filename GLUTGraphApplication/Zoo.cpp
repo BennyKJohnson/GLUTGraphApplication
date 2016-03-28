@@ -7,19 +7,35 @@
 //
 
 #include "Zoo.hpp"
+#include <random>
 
 
 Zoo::Zoo(std::string title, std::vector<int> bannanas) {
     
     this->title = title;
-    this->bannanas = bannanas;
+    this->bananas = bannanas;
 
 }
 
 void Zoo::incrumentBannanasAtIndex(int index) {
-    bannanas[index] += 100;
+    if (bananas[index] < 500) {
+        bananas[index] += 100;
+    }
 }
 
 void Zoo::decreaseBannanasAtIndex(int index) {
-    bannanas[index] -= 100;
+    bananas[index] -= 100;
+}
+
+void Zoo::randomiseData() {
+    bananas.clear();
+    int min = 0;
+    int max = 500;
+    
+    for (int i = 0; i < 7; i++) {
+        int randomNumber = min + (rand() % (int)(max - min + 1));
+        bananas.push_back(randomNumber);
+    }
+    // Generate random values
+    
 }

@@ -7,9 +7,15 @@
 //
 
 #include "BarChartView.hpp"
-#include <GLUT/GLUT.h>//GLUT Library, will make you life easier
-#include <OpenGL/OpenGL.h>//OpenGL Library
 #include <iostream>
+
+#ifdef __APPLE__
+#include <GLUT/GLUT.h> //GLUT Library, will make you life easier
+#include <OpenGL/OpenGL.h> //OpenGL Library
+#elif defined _WIN32 || defined _WIN64
+#    include <GL\glut.h>
+#endif
+
 
 void BarChartView::drawLegend(CGRect rect) {
     
