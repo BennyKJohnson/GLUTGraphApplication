@@ -14,12 +14,13 @@
 #include <GLUT/GLUT.h> //GLUT Library, will make you life easier
 #include <OpenGL/OpenGL.h> //OpenGL Library
 #elif defined _WIN32 || defined _WIN64
-#    include <GL\glut.h>
+#include <GL\glut.h>
 #endif
 
 #include "PieChartView.hpp"
 #include "LineChartView.hpp"
 #include "BarChartView.hpp"
+#include "StatusBarView.hpp"
 
 #include "CGGeometry.hpp"
 #include "Zoo.hpp"
@@ -34,6 +35,7 @@ using namespace std;
 PieChartView *pieChart;
 LineChartView *lineChart;
 BarChartView *barChart;
+StatusBarView statusBar;
 
 
 Zoo *mogoZoo;
@@ -43,15 +45,23 @@ Zoo *selectedZoo;
 
 int selectedYearIndex;
 int mainWindow;
+vector<string*> xVals;
 
-enum MenuOption {
-    Add = 1,
-    Edit = 2
+
+enum MainMenu {
+    FirstZoo,
+    SecondZoo,
+    RandomiseData,
+    ChangeColors
 };
 
 void deinit() {
     delete mogoZoo;
     delete tarongaZoo;
+    
+    // Delete graphs
+    delete lineChart;
+    delete pieChart;
 }
 
 void keyboardHandler(unsigned char key, int x, int y) {
@@ -77,17 +87,34 @@ void windowShouldRedraw() {
     glutPostRedisplay();
 }
 
+void setStatusBarText(std::string *status) {
+    
+    // Set text
+    statusBar.setText(status);
+    // Redraw screen
+    glutPostRedisplay();
+    // Cleanup
+//    delete status;
+}
+
+void selectZoo(Zoo* zoo) {
+    selectedZoo = zoo;
+    string *status = new string(*(&zoo->title));
+    *(status) += " ";
+    *(status) += *(xVals[selectedYearIndex]);
+    
+    setStatusBarText(status);
+}
 
 void specialKeyboardHandler(int key, int x, int y) {
     
     switch (key) {
         case GLUT_KEY_F1:
-            cout << "Selected Taronga Zoo";
-            selectedZoo = mogoZoo;
+            selectZoo(mogoZoo);
             break;
         case GLUT_KEY_F2:
-            cout << "Selected Mogo Zoo";
-            selectedZoo = tarongaZoo;
+            selectZoo(tarongaZoo);
+            break;
         case GLUT_KEY_DOWN:
             selectedZoo->decreaseBannanasAtIndex(selectedYearIndex);
             windowShouldRedraw();
@@ -101,41 +128,95 @@ void specialKeyboardHandler(int key, int x, int y) {
     }
 }
 
-void contextMenuHandler(int value) {
-    cout << value;
+void randomiseData() {
+    
 }
 
-void createContextMenu() {
-    int startYear = 2005;
-    int endYear = 2011;
+void changeColors() {
     
-    int menuCounter = 1;
-    glutAddMenuEntry("Exit", 0);
+}
+
+void contextMenuHandler(int value) {
     
+    
+    setStatusBarText(new string("New value"));
+    if(value < 10) {
+        switch (value) {
+            case MainMenu::RandomiseData:
+                setStatusBarText(new string("Randomise Data"));
+                randomiseData();
+                break;
+            case MainMenu::ChangeColors:
+                setStatusBarText(new string("Change Colors"));
+                changeColors();
+                break;
+            default:
+                break;
+        }
+    } else {
+        
+        int zooIndex = value / 10;
+        selectedYearIndex = value % 10;
+        
+        if(zooIndex == 1) {
+            selectZoo(mogoZoo);
+        } else {
+            selectZoo(tarongaZoo);
+        }
+    }
+   
+    
+    cout << value << std::endl;
+}
+
+int createYearSubMenuWithOffset(int offset, int startYear, int endYear) {
     // Create year submenu
     int yearSubMenu = glutCreateMenu(contextMenuHandler);
     
+    int menuCounter = offset;
     for (int i = startYear; i <= endYear; i++) {
         string label = to_string(i);
         glutAddMenuEntry(label.c_str(), menuCounter);
         menuCounter++;
     }
     
+    return yearSubMenu;
+}
+
+void createContextMenu() {
+    int startYear = 2005;
+    int endYear = 2011;
+    
+    glutAddMenuEntry("Exit", 0);
+  
+    // Create Year Submenus
+    int zoo1SubMenu = createYearSubMenuWithOffset(10, startYear, endYear);
+    int zoo2SubMenu = createYearSubMenuWithOffset(20, startYear, endYear);
+    
     // Create main menu
     glutCreateMenu(contextMenuHandler);
     
     // Add submenus
-    glutAddSubMenu(mogoZoo->title.c_str(), yearSubMenu);
-    glutAddSubMenu(tarongaZoo->title.c_str(), yearSubMenu);
+    glutAddSubMenu(mogoZoo->title.c_str(), zoo1SubMenu);
+    glutAddSubMenu(tarongaZoo->title.c_str(), zoo2SubMenu);
 
     // Add option menu items
-    glutAddMenuEntry("Randomise data", menuCounter);
-    glutAddMenuEntry("Change Colors", menuCounter);
+    //int stuff = MainMenu.RandomiseData;
+    glutAddMenuEntry("Randomise data", MainMenu::RandomiseData);
+    glutAddMenuEntry("Change Colors", MainMenu::ChangeColors);
 
     // Set the menu to right click
     glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
+CGRect getWindowRect() {
+    int x = glutGet(GLUT_WINDOW_X);
+    int y = glutGet(GLUT_WINDOW_Y);
+    int width = glutGet(GLUT_WINDOW_WIDTH);
+    int height = glutGet(GLUT_WINDOW_HEIGHT);
+    
+    return CGRectMake((float)x, (float)y, (float)width, (float)height);
+}
 
 void render(void){
     
@@ -148,14 +229,16 @@ void render(void){
     // Draw graphs
     lineChart->draw(CGRectMake(0, 10, 350, 250));
     barChart->draw(CGRectMake(450, 10, 250, 250));
+    
+    // Draw Status Bar
+    CGRect windowRect = getWindowRect();
+    int statusBarHeight = 24;
+    float yPosition = windowRect.height - statusBarHeight;
+    CGRect statusBarRect = CGRectMake(0, yPosition, windowRect.width, statusBarHeight);
+    statusBar.draw(statusBarRect);
    
     glFlush();
 }
-
-void zooMenuClicked(int i) {
-    
-}
-
 
 
 void setOGLProjection(int width, int height) {
@@ -180,28 +263,23 @@ void resize(int width, int height) {
     setOGLProjection(width, height);
 }
 
-vector<string*> getAvailableYears() {
+void setupAvailableYears() {
     
-    vector<string*> xVals = vector<string*>();
+    std::string *year2005 = new string("2005");
+    std::string *year2006 = new string("2006");
+    std::string *year2007 = new string("2007");
+    std::string *year2008 = new string("2008");
+    std::string *year2009 = new string("2009");
+    std::string *year2010 = new string("2010");
+    std::string *year2011 = new string("2011");
     
-    std::string year2005 = "2005";
-    std::string year2006 = "2006";
-    std::string year2007 = "2007";
-    std::string year2008 = "2008";
-    std::string year2009 = "2009";
-    std::string year2010 = "2010";
-    std::string year2011 = "2011";
-
-    
-    xVals.push_back(&year2005);
-    xVals.push_back(&year2006);
-    xVals.push_back(&year2007);
-    xVals.push_back(&year2008);
-    xVals.push_back(&year2009);
-    xVals.push_back(&year2010);
-    xVals.push_back(&year2011);
-
-    return xVals;
+    xVals.push_back(year2005);
+    xVals.push_back(year2006);
+    xVals.push_back(year2007);
+    xVals.push_back(year2008);
+    xVals.push_back(year2009);
+    xVals.push_back(year2010);
+    xVals.push_back(year2011);
     
 }
 
@@ -255,22 +333,8 @@ void initOpenGL() {
 }
 
 void setupGraphs() {
-    vector<string*> xVals;
     
-    std::string year2005 = "2005";
-    std::string year2006 = "2006";
-    std::string year2007 = "2007";
-    std::string year2008 = "2008";
-    std::string year2009 = "2009";
-    std::string year2010 = "2010";
-    std::string year2011 = "2011";
-    xVals.push_back(&year2005);
-    xVals.push_back(&year2006);
-    xVals.push_back(&year2007);
-    xVals.push_back(&year2008);
-    xVals.push_back(&year2009);
-    xVals.push_back(&year2010);
-    xVals.push_back(&year2011);
+    setupAvailableYears();
     
     vector<vector<int>> dataSets;
     vector<std::string*> dataSetTitles;
@@ -298,7 +362,6 @@ void setupGraphs() {
 
 int main(int argc, char * argv[]) {
     
-    
     #ifdef __APPLE__
         //Init glut passing some args
         glutInit(&argc, argv);
@@ -312,9 +375,13 @@ int main(int argc, char * argv[]) {
     
     //Where do we want to place the window initially?
     glutInitWindowPosition(100,100);
+    selectedYearIndex = 0;
     
     //Name the window and create it
     mainWindow = glutCreateWindow("Zoo Graphs");
+    statusBar = StatusBarView();
+    setStatusBarText(new string("Test status"));
+    
     setupGraphs();
     initOpenGL();
     

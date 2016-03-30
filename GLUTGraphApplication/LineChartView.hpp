@@ -37,7 +37,7 @@ public:
     
     int graphYOffset;
     int graphXOffset;
-    
+    ~LineChartView();
 };
 
 

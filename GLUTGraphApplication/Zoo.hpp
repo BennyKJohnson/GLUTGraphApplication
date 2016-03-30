@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <iostream>
 
 class Zoo {
 public:
@@ -22,6 +23,8 @@ public:
     void incrumentBannanasAtIndex(int index);
     void decreaseBannanasAtIndex(int index);
     void randomiseData();
+    friend std::ostream& operator<<(std::ostream& os, const Zoo& dt);
+
 };
 
 

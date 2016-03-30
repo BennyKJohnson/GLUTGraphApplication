@@ -21,6 +21,15 @@ void LineChartView::drawCircles() {
     
 }
 
+LineChartView::~LineChartView() {
+    
+    // Delete axis labels
+    for(int i = 0; i < xVals.size(); ++i)
+        delete xVals[i];
+    
+}
+
+
 void drawDataPoint(CGRect rect, CGColor color, int innerBorder) {
     
     // Draw Color Circle

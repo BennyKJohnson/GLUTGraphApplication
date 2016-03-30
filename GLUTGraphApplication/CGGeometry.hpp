@@ -53,6 +53,7 @@ CGColor CGColorGreen();
 CGColor CGColorBlack();
 CGColor CGColorWhite();
 
+CGColor statusBarColor();
 // Colors for main color scheme
 CGColor CGColorSimpleCyan();
 CGColor CGColorSimpleYellow();

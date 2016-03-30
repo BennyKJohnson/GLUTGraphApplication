@@ -11,10 +11,8 @@
 
 
 Zoo::Zoo(std::string title, std::vector<int> bannanas) {
-    
     this->title = title;
     this->bananas = bannanas;
-
 }
 
 void Zoo::incrumentBannanasAtIndex(int index) {
@@ -38,4 +36,14 @@ void Zoo::randomiseData() {
     }
     // Generate random values
     
+}
+
+std::ostream& operator<<(std::ostream& os, const Zoo& zoo)
+{
+    os << zoo.title << std::endl;
+    for (int i = 0; i < zoo.bananas.size(); i++) {
+        os << i << ": " << zoo.bananas[i] << std::endl;
+    }
+    
+    return os;
 }

@@ -51,6 +51,9 @@ CGColor CGColorWhite() {
     return color;
 }
 
+CGColor statusBarColor() {
+    return CGColorMakeWithRGB(246, 246, 246);
+}
 
 
 // Modified code from http://slabode.exofire.net/circle_draw.shtml

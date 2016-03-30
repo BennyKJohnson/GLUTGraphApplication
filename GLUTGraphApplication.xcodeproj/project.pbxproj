@@ -15,6 +15,7 @@
 		6F7DF96E1C9CFD9B0011AAD9 /* PieChartView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F7DF96C1C9CFD9B0011AAD9 /* PieChartView.cpp */; };
 		6F7DF9711C9CFFC10011AAD9 /* CGGeometry.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6F7DF96F1C9CFFC10011AAD9 /* CGGeometry.cpp */; };
 		A3C696CA1C9F903E008A5505 /* Chart.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A3C696C81C9F903E008A5505 /* Chart.cpp */; };
+		A3EEF94C1CAA06EE00785E30 /* StatusBarView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A3EEF94A1CAA06EE00785E30 /* StatusBarView.cpp */; };
 		A3EF9E441C96554500C3B053 /* BarChartView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A3EF9E421C96554500C3B053 /* BarChartView.cpp */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +46,8 @@
 		6F7DF9701C9CFFC10011AAD9 /* CGGeometry.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CGGeometry.hpp; sourceTree = "<group>"; };
 		A3C696C81C9F903E008A5505 /* Chart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Chart.cpp; sourceTree = "<group>"; };
 		A3C696C91C9F903E008A5505 /* Chart.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Chart.hpp; sourceTree = "<group>"; };
+		A3EEF94A1CAA06EE00785E30 /* StatusBarView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StatusBarView.cpp; sourceTree = "<group>"; };
+		A3EEF94B1CAA06EE00785E30 /* StatusBarView.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StatusBarView.hpp; sourceTree = "<group>"; };
 		A3EF9E421C96554500C3B053 /* BarChartView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BarChartView.cpp; sourceTree = "<group>"; };
 		A3EF9E431C96554500C3B053 /* BarChartView.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BarChartView.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -104,6 +107,8 @@
 				6F55EAD61C9E21A300316F9F /* LineChartView.cpp */,
 				A3C696C81C9F903E008A5505 /* Chart.cpp */,
 				A3C696C91C9F903E008A5505 /* Chart.hpp */,
+				A3EEF94A1CAA06EE00785E30 /* StatusBarView.cpp */,
+				A3EEF94B1CAA06EE00785E30 /* StatusBarView.hpp */,
 			);
 			name = Graphs;
 			sourceTree = "<group>";
@@ -170,6 +175,7 @@
 				6F63C6EB1C94F1C600CCE34E /* main.cpp in Sources */,
 				6F55EAD81C9E21A300316F9F /* LineChartView.cpp in Sources */,
 				A3C696CA1C9F903E008A5505 /* Chart.cpp in Sources */,
+				A3EEF94C1CAA06EE00785E30 /* StatusBarView.cpp in Sources */,
 				A3EF9E441C96554500C3B053 /* BarChartView.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
