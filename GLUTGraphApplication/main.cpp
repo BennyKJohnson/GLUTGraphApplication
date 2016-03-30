@@ -64,6 +64,25 @@ void deinit() {
     delete pieChart;
 }
 
+void setStatusBarText(std::string *status) {
+    
+    // Set text
+    statusBar.setText(status);
+    // Redraw screen
+    glutPostRedisplay();
+    // Cleanup
+    //    delete status;
+}
+
+void selectZoo(Zoo* zoo) {
+    selectedZoo = zoo;
+    string *status = new string(*(&zoo->title));
+    *(status) += " ";
+    *(status) += *(xVals[selectedYearIndex]);
+    
+    setStatusBarText(status);
+}
+
 void keyboardHandler(unsigned char key, int x, int y) {
     // Escape
     cout << "Key pressed: " << key << endl;
@@ -75,10 +94,9 @@ void keyboardHandler(unsigned char key, int x, int y) {
     // 1 - 7
     } else if(key > 48 && key < 56) {
         int normalizedDataIndex = key - 48 - 1;
-        int selectedYearIndex = key - 48 - 1 + 2005;
+        int yearIndex = key - 48 - 1 + 2005;
         selectedYearIndex = normalizedDataIndex;
-        
-        cout << selectedZoo->title << " year: " << selectedYearIndex << endl;
+        selectZoo(selectedZoo);
     }
 }
 
@@ -87,24 +105,7 @@ void windowShouldRedraw() {
     glutPostRedisplay();
 }
 
-void setStatusBarText(std::string *status) {
-    
-    // Set text
-    statusBar.setText(status);
-    // Redraw screen
-    glutPostRedisplay();
-    // Cleanup
-//    delete status;
-}
 
-void selectZoo(Zoo* zoo) {
-    selectedZoo = zoo;
-    string *status = new string(*(&zoo->title));
-    *(status) += " ";
-    *(status) += *(xVals[selectedYearIndex]);
-    
-    setStatusBarText(status);
-}
 
 void specialKeyboardHandler(int key, int x, int y) {
     
@@ -119,10 +120,18 @@ void specialKeyboardHandler(int key, int x, int y) {
             selectedZoo->decreaseBannanasAtIndex(selectedYearIndex);
             windowShouldRedraw();
             cout << "Decrease bannanas" << endl;
+            cout << *(selectedZoo);
+            break;
         case GLUT_KEY_UP:
+            cout << "Before: " <<(selectedZoo->bananas[selectedYearIndex]);
+
             selectedZoo->incrumentBannanasAtIndex(selectedYearIndex);
             windowShouldRedraw();
+
             cout << "Incrument bannanas" << endl;
+            cout << "After: " << (selectedZoo->bananas[selectedYearIndex]);
+
+            break;
         default:
             break;
     }
@@ -238,6 +247,8 @@ void render(void){
     statusBar.draw(statusBarRect);
    
     glFlush();
+    
+    cout << "Did render" << endl;
 }
 
 
@@ -337,6 +348,7 @@ void setupGraphs() {
     setupAvailableYears();
     
     vector<vector<int>> dataSets;
+    vector<vector<int>*> pointerDataSets;
     vector<std::string*> dataSetTitles;
     
     // Setup Zoos
@@ -352,10 +364,15 @@ void setupGraphs() {
     dataSets.push_back(mogoZoo->bananas);
     dataSets.push_back(tarongaZoo->bananas);
     
-    barChart = new BarChartView(xVals, dataSets);
+    
+    pointerDataSets.push_back(&mogoZoo->bananas);
+    pointerDataSets.push_back(&tarongaZoo->bananas);
+    
+    
+    barChart = new BarChartView(xVals, pointerDataSets);
     barChart->dataSetTitles = dataSetTitles;
     
-    lineChart = new LineChartView(xVals,dataSets);
+    lineChart = new LineChartView(xVals,pointerDataSets);
     lineChart->dataSetTitles = dataSetTitles;
 
 }

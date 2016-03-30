@@ -152,9 +152,9 @@ void BarChartView::draw(CGRect rect) {
     
     // Iterate through datasets
     currentDataSet = 0;
-    for (std::vector<std::vector<int>>::iterator dataSetIterator = dataSets.begin(); dataSetIterator != dataSets.end(); dataSetIterator++) {
+    for (std::vector<std::vector<int>*>::iterator dataSetIterator = dataSets.begin(); dataSetIterator != dataSets.end(); dataSetIterator++) {
         
-        drawDataSet(*dataSetIterator, rect, colors[currentDataSet]);
+        drawDataSet(**dataSetIterator, rect, colors[currentDataSet]);
         // Incrument current dataset, important for drawDataSet
         currentDataSet++;
     }
@@ -164,7 +164,7 @@ void BarChartView::draw(CGRect rect) {
     
 }
 
-BarChartView::BarChartView(std::vector<std::string*> xVals, std::vector<std::vector<int>> yVals) {
+BarChartView::BarChartView(std::vector<std::string*> xVals, std::vector<std::vector<int>*> yVals) {
     this->xVals = xVals;
     this->dataSets = yVals;
     

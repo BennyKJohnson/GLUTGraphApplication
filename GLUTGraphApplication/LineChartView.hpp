@@ -26,13 +26,13 @@ class LineChartView: public Chart {
 public:
     
     std::vector<std::string*> xVals;
-    std::vector<std::vector<int>> dataSets;
+    std::vector<std::vector<int>*> dataSets;
     std::vector<CGColor> colors;
     std::vector<std::string*> dataSetTitles;
     
     std::string *title;
 
-    LineChartView(std::vector<std::string*> xVals, std::vector<std::vector<int>> yVals);
+    LineChartView(std::vector<std::string*> xVals, std::vector<std::vector<int>*> yVals);
     void draw(CGRect rect);
     
     int graphYOffset;

@@ -25,12 +25,12 @@ class BarChartView {
 public:
     
     std::vector<std::string*> xVals;
-    std::vector<std::vector<int>> dataSets;
+    std::vector<std::vector<int>*> dataSets;
     std::vector<CGColor> colors;
     std::vector<std::string*> dataSetTitles;
     
     
-    BarChartView(std::vector<std::string*> xVals, std::vector<std::vector<int>> dataSets);
+    BarChartView(std::vector<std::string*> xVals, std::vector<std::vector<int>*> dataSets);
     int graphYOffset;
     int graphXOffset;
     int currentDataSet;

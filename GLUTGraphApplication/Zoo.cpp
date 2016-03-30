@@ -22,7 +22,7 @@ void Zoo::incrumentBannanasAtIndex(int index) {
 }
 
 void Zoo::decreaseBannanasAtIndex(int index) {
-    bananas[index] -= 100;
+    bananas[index] = bananas[index] - 100;
 }
 
 void Zoo::randomiseData() {

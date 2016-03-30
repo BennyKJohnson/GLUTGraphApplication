@@ -40,7 +40,7 @@ void drawDataPoint(CGRect rect, CGColor color, int innerBorder) {
     drawCircle(innerCircle, CGColorWhite());
 }
 
-LineChartView::LineChartView(std::vector<std::string*> xVals, std::vector<std::vector<int>> yVals) {
+LineChartView::LineChartView(std::vector<std::string*> xVals, std::vector<std::vector<int>*> yVals) {
     this->xVals = xVals;
     this->dataSets = yVals;
     
@@ -201,9 +201,9 @@ void LineChartView::draw(CGRect rect) {
     
     // Iterate through datasets
     int i = 0;
-    for (std::vector<std::vector<int>>::iterator dataSetIterator = dataSets.begin(); dataSetIterator != dataSets.end(); dataSetIterator++) {
+    for (std::vector<std::vector<int>*>::iterator dataSetIterator = dataSets.begin(); dataSetIterator != dataSets.end(); dataSetIterator++) {
         
-        drawDataSet(*dataSetIterator, rect, colors[i]);
+        drawDataSet(**dataSetIterator, rect, colors[i]);
         i++;
     }
     
