@@ -21,7 +21,7 @@
 #include "LineChartView.hpp"
 #include "BarChartView.hpp"
 #include "StatusBarView.hpp"
-
+#include <algorithm>
 #include "CGGeometry.hpp"
 #include "Zoo.hpp"
 
