@@ -10,19 +10,21 @@
 #include <random>
 
 
-Zoo::Zoo(std::string title, std::vector<int> bannanas) {
+Zoo::Zoo(std::string* title, std::vector<int> bannanas) {
     this->title = title;
     this->bananas = bannanas;
 }
 
 void Zoo::incrumentBannanasAtIndex(int index) {
     if (bananas[index] < 500) {
-        bananas[index] += 100;
+        bananas[index] += 1;
     }
 }
 
 void Zoo::decreaseBannanasAtIndex(int index) {
-    bananas[index] = bananas[index] - 100;
+    if (bananas[index] >= 0) {
+        bananas[index] = bananas[index] - 1;
+    }
 }
 
 void Zoo::randomiseData() {

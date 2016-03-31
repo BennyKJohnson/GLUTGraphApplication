@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <string>
+#include <vector>
 
 // Simple struct for a rectangle area represented by x,y and width and height
 typedef struct CGRect {
@@ -61,6 +62,8 @@ CGColor CGColorSimpleOrange();
 CGColor CGColorSimpleGreen();
 CGColor CGColorSimpleRed();
 CGColor CGColorSimpleBlue();
+
+std::vector<CGColor> simpleColorScheme();
 
 // Converts degrees to radians
 float degreesToRadians(float degree);

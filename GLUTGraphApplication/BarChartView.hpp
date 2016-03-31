@@ -13,8 +13,9 @@
 #include <string.h>
 #include <vector>
 #include "CGGeometry.hpp"
+#include "Chart.hpp"
 
-class BarChartView {
+class BarChartView: public Chart {
     
     void drawYAxis(CGRect rect);
     void drawXAxis(CGRect rect);
@@ -26,9 +27,7 @@ public:
     
     std::vector<std::string*> xVals;
     std::vector<std::vector<int>*> dataSets;
-    std::vector<CGColor> colors;
     std::vector<std::string*> dataSetTitles;
-    
     
     BarChartView(std::vector<std::string*> xVals, std::vector<std::vector<int>*> dataSets);
     int graphYOffset;

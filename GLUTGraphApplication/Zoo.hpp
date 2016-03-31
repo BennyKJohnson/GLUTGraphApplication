@@ -16,10 +16,10 @@
 
 class Zoo {
 public:
-    std::string title;
+    std::string *title;
     std::vector<int> bananas;
     
-    Zoo(std::string title, std::vector<int> bananas);
+    Zoo(std::string* title, std::vector<int> bananas);
     void incrumentBannanasAtIndex(int index);
     void decreaseBannanasAtIndex(int index);
     void randomiseData();

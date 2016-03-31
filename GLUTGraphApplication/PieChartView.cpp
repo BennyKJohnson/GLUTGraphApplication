@@ -16,7 +16,7 @@
 #include <GLUT/GLUT.h> //GLUT Library, will make you life easier
 #include <OpenGL/OpenGL.h> //OpenGL Library
 #elif defined _WIN32 || defined _WIN64
-#    include <GL\glut.h>
+#    include <glut.h>
 #endif
 
 
@@ -62,7 +62,7 @@ void PieChartView::drawLegend(CGRect rect) {
         // Draw Label
         glColor4f(0, 0,0, 1.0);
         renderBitmapString(xOffset + 20, yOffset + 10, myString, GLUT_BITMAP_HELVETICA_12);
-
+        
         yOffset += 20;
         colorIterator++;
     }
@@ -70,7 +70,7 @@ void PieChartView::drawLegend(CGRect rect) {
 }
 
 
-void PieChartView::drawPieChartInRect(CGRect rect, std::vector<int> values) {
+void PieChartView::drawPieChartInRect(CGRect rect, std::vector<int>* values) {
     
     float radius = fmin(rect.height, rect.width) / 2;
     
@@ -80,14 +80,14 @@ void PieChartView::drawPieChartInRect(CGRect rect, std::vector<int> values) {
     float currentAngle = 0;
     
     float totalValue = 0;
-     for (int i = 0; i < values.size(); i++) {
-         totalValue += values[i];
+     for (int i = 0; i < values->size(); i++) {
+         totalValue += (*values)[i];
      }
     
     std::cout << "Total Value: " << totalValue << std::endl;
-    for (int i = 0; i < values.size(); i++) {
+    for (int i = 0; i < values->size(); i++) {
         float startAngle = currentAngle;
-        int currentValue = values[i];
+        int currentValue = (*values)[i];
         CGColor currentColor = colors[i];
         int sweepAngle = (currentValue / totalValue) * 360;
        // int sweepAngleOld = (currentValue * 360) /100;
@@ -104,17 +104,21 @@ void PieChartView::drawPieChartInRect(CGRect rect, std::vector<int> values) {
 
 
 
-void PieChartView::draw() {
-    
-    CGRect rect = CGRectMake(0, 0, 250, 250);
+void PieChartView::draw(CGRect rect)
+ {
+     
+     renderBitmapString(rect.x, rect.y, title, GLUT_BITMAP_HELVETICA_18);
+     
     drawPieChartInRect(rect,values);
-    drawLegend(CGRectMake(300, 125, 200, 200));
+    drawLegend(CGRectMake(rect.x + rect.width + 50, (rect.height + rect.y + 150) / 2, 100, 100));
+
+   // drawLegend(CGRectMake(300, 125, 200, 200));
     
 }
 
 
 
-PieChartView::PieChartView(std::vector<std::string*> vals, std::vector<int> yVals) {
+PieChartView::PieChartView(std::vector<std::string*> vals, std::vector<int> *yVals) {
     colors = std::vector<CGColor>();
     
     // Setup Default Color Scheme

@@ -10,12 +10,15 @@
 #define Chart_hpp
 
 #include <stdio.h>
+#include "CGGeometry.hpp"
+#include <vector>
 
 class Chart {
-    
+
 public:
     int maximumValue();
     Chart();
+    std::vector<CGColor> colors;
 
 };
 

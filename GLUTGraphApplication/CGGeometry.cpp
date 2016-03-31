@@ -14,7 +14,7 @@
 #include <GLUT/GLUT.h> //GLUT Library, will make you life easier
 #include <OpenGL/OpenGL.h> //OpenGL Library
 #elif defined _WIN32 || defined _WIN64
-#    include <GL\glut.h>
+#    include <glut.h>
 #endif
 
 
@@ -141,6 +141,8 @@ void renderBitmapString(int x, int y, std::string *string, void *font) {
     }
 }
 
+
+
 CGPoint CGPointMake(float x, float y) {
     CGPoint point;
     point.x = x;
@@ -236,5 +238,19 @@ CGColor CGColorBlue() {
     color.a = 1;
     
     return color;
+}
+
+std::vector<CGColor> simpleColorScheme() {
+    
+    std::vector<CGColor> colors;
+    
+    colors.push_back(CGColorSimpleOrange());
+    colors.push_back(CGColorSimpleBlue());
+    colors.push_back(CGColorSimpleCyan());
+    colors.push_back(CGColorSimpleRed());
+    colors.push_back(CGColorSimpleYellow());
+    colors.push_back(CGColorSimpleGreen());
+    
+    return colors;
 }
 

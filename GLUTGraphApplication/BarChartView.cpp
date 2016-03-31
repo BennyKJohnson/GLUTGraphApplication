@@ -13,7 +13,7 @@
 #include <GLUT/GLUT.h> //GLUT Library, will make you life easier
 #include <OpenGL/OpenGL.h> //OpenGL Library
 #elif defined _WIN32 || defined _WIN64
-#    include <GL\glut.h>
+#    include <glut.h>
 #endif
 
 
@@ -169,8 +169,10 @@ BarChartView::BarChartView(std::vector<std::string*> xVals, std::vector<std::vec
     this->dataSets = yVals;
     
     // set default color scheme
-    colors.push_back(CGColorSimpleCyan());
-    colors.push_back(CGColorSimpleBlue());
+    colors = simpleColorScheme();
+    
+    //colors.push_back(CGColorSimpleCyan());
+    //colors.push_back(CGColorSimpleBlue());
     
     // Set default offsets
     graphXOffset = 50;

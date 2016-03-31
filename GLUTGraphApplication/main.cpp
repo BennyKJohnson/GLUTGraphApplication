@@ -14,7 +14,7 @@
 #include <GLUT/GLUT.h> //GLUT Library, will make you life easier
 #include <OpenGL/OpenGL.h> //OpenGL Library
 #elif defined _WIN32 || defined _WIN64
-#include <GL\glut.h>
+#include <glut.h>
 #endif
 
 #include "PieChartView.hpp"
@@ -33,6 +33,7 @@ using namespace std;
 
 // Chart Views
 PieChartView *pieChart;
+PieChartView *pieChart2;
 LineChartView *lineChart;
 BarChartView *barChart;
 StatusBarView statusBar;
@@ -40,6 +41,9 @@ StatusBarView statusBar;
 
 Zoo *mogoZoo;
 Zoo *tarongaZoo;
+vector<Zoo*> zoos;
+vector<Chart*> charts;
+
 // Pointer to the active zoo currently selected by user
 Zoo *selectedZoo;
 
@@ -54,6 +58,9 @@ enum MainMenu {
     RandomiseData,
     ChangeColors
 };
+
+void randomiseData();
+void changeColors();
 
 void deinit() {
     delete mogoZoo;
@@ -76,7 +83,7 @@ void setStatusBarText(std::string *status) {
 
 void selectZoo(Zoo* zoo) {
     selectedZoo = zoo;
-    string *status = new string(*(&zoo->title));
+    string *status = new string(*(zoo->title));
     *(status) += " ";
     *(status) += *(xVals[selectedYearIndex]);
     
@@ -94,9 +101,12 @@ void keyboardHandler(unsigned char key, int x, int y) {
     // 1 - 7
     } else if(key > 48 && key < 56) {
         int normalizedDataIndex = key - 48 - 1;
-        int yearIndex = key - 48 - 1 + 2005;
         selectedYearIndex = normalizedDataIndex;
         selectZoo(selectedZoo);
+    } else if (key == 'r') {
+        randomiseData();
+    } else if (key == 'c') {
+        changeColors();
     }
 }
 
@@ -119,18 +129,10 @@ void specialKeyboardHandler(int key, int x, int y) {
         case GLUT_KEY_DOWN:
             selectedZoo->decreaseBannanasAtIndex(selectedYearIndex);
             windowShouldRedraw();
-            cout << "Decrease bannanas" << endl;
-            cout << *(selectedZoo);
             break;
         case GLUT_KEY_UP:
-            cout << "Before: " <<(selectedZoo->bananas[selectedYearIndex]);
-
             selectedZoo->incrumentBannanasAtIndex(selectedYearIndex);
             windowShouldRedraw();
-
-            cout << "Incrument bannanas" << endl;
-            cout << "After: " << (selectedZoo->bananas[selectedYearIndex]);
-
             break;
         default:
             break;
@@ -139,10 +141,22 @@ void specialKeyboardHandler(int key, int x, int y) {
 
 void randomiseData() {
     
+    for (vector<Zoo*>::iterator i = zoos.begin(); i != zoos.end(); i++) {
+        Zoo* zoo = *i;
+        zoo->randomiseData();
+    }
+    
+    windowShouldRedraw();
 }
 
 void changeColors() {
-    
+    for (vector<Chart*>::iterator i = charts.begin(); i != charts.end(); i++) {
+        Chart *chart = *i;
+        
+        std::random_shuffle ( chart->colors.begin(), chart->colors.end());
+
+    }
+    windowShouldRedraw();
 }
 
 void contextMenuHandler(int value) {
@@ -206,8 +220,8 @@ void createContextMenu() {
     glutCreateMenu(contextMenuHandler);
     
     // Add submenus
-    glutAddSubMenu(mogoZoo->title.c_str(), zoo1SubMenu);
-    glutAddSubMenu(tarongaZoo->title.c_str(), zoo2SubMenu);
+    glutAddSubMenu(mogoZoo->title->c_str(), zoo1SubMenu);
+    glutAddSubMenu(tarongaZoo->title->c_str(), zoo2SubMenu);
 
     // Add option menu items
     //int stuff = MainMenu.RandomiseData;
@@ -238,6 +252,9 @@ void render(void){
     // Draw graphs
     lineChart->draw(CGRectMake(0, 10, 350, 250));
     barChart->draw(CGRectMake(450, 10, 250, 250));
+    pieChart2->draw(CGRectMake(400, 300, 250, 250));
+
+    pieChart->draw(CGRectMake(0, 300, 250, 250));
     
     // Draw Status Bar
     CGRect windowRect = getWindowRect();
@@ -297,7 +314,7 @@ void setupAvailableYears() {
 // Create Mogo Zoo and populate it with data
 Zoo* getMogoZoo() {
     
-    std::string title = "Mogo Zoo";
+    std::string *title = new string("Mogo Zoo");
     
     // Set Values
     std::vector<int> bannanas;
@@ -316,7 +333,7 @@ Zoo* getMogoZoo() {
 // Create Taronga Zoo and populate it with data
 Zoo* getTarongaZoo() {
     
-    std::string title = "Taronga Zoo";
+    std::string *title = new string("Taronga Zoo");
     
     // Set Values
     std::vector<int> bannanas;
@@ -343,38 +360,53 @@ void initOpenGL() {
     
 }
 
-void setupGraphs() {
+void setupChartsWithDataSets(vector<vector<int>*> dataSets, vector<std::string*> dataSetTitles) {
+    barChart = new BarChartView(xVals, dataSets);
+    barChart->dataSetTitles = dataSetTitles;
+    
+    lineChart = new LineChartView(xVals,dataSets);
+    lineChart->dataSetTitles = dataSetTitles;
+    
+    pieChart = new PieChartView(xVals, &mogoZoo->bananas);
+    pieChart->title = dataSetTitles[0];
+    
+    pieChart2 = new PieChartView(xVals, &tarongaZoo->bananas);
+    pieChart2->title = dataSetTitles[1];
+    
+    // Add Charts
+    charts.push_back(lineChart);
+    charts.push_back(barChart);
+    charts.push_back(pieChart);
+    charts.push_back(pieChart2);
+
+}
+
+
+void setup() {
     
     setupAvailableYears();
     
-    vector<vector<int>> dataSets;
-    vector<vector<int>*> pointerDataSets;
+    vector<vector<int>*> dataSets;
     vector<std::string*> dataSetTitles;
     
     // Setup Zoos
     mogoZoo = getMogoZoo();
     tarongaZoo = getTarongaZoo();
     
-    selectedZoo = mogoZoo;
+    zoos.push_back(mogoZoo);
+    zoos.push_back(tarongaZoo);
+    
     selectedYearIndex = 0;
-    
-    dataSetTitles.push_back(&mogoZoo->title);
-    dataSetTitles.push_back(&tarongaZoo->title);
-    
-    dataSets.push_back(mogoZoo->bananas);
-    dataSets.push_back(tarongaZoo->bananas);
-    
-    
-    pointerDataSets.push_back(&mogoZoo->bananas);
-    pointerDataSets.push_back(&tarongaZoo->bananas);
-    
-    
-    barChart = new BarChartView(xVals, pointerDataSets);
-    barChart->dataSetTitles = dataSetTitles;
-    
-    lineChart = new LineChartView(xVals,pointerDataSets);
-    lineChart->dataSetTitles = dataSetTitles;
+    selectZoo(mogoZoo);
 
+    dataSetTitles.push_back(mogoZoo->title);
+    dataSetTitles.push_back(tarongaZoo->title);
+    
+    dataSets.push_back(&mogoZoo->bananas);
+    dataSets.push_back(&tarongaZoo->bananas);
+    
+    setupChartsWithDataSets(dataSets, dataSetTitles);
+  
 }
 
 int main(int argc, char * argv[]) {
@@ -397,12 +429,11 @@ int main(int argc, char * argv[]) {
     //Name the window and create it
     mainWindow = glutCreateWindow("Zoo Graphs");
     statusBar = StatusBarView();
-    setStatusBarText(new string("Test status"));
     
-    setupGraphs();
+    setup();
+    
     initOpenGL();
     
-   
     //Start the main loop running, nothing after this will execute for all eternity (right now)
     glutMainLoop();
     

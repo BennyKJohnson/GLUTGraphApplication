@@ -13,7 +13,7 @@
 #include <GLUT/GLUT.h> //GLUT Library, will make you life easier
 #include <OpenGL/OpenGL.h> //OpenGL Library
 #elif defined _WIN32 || defined _WIN64
-#    include <GL\glut.h>
+#    include <glut.h>
 #endif
 
 
@@ -46,6 +46,10 @@ LineChartView::LineChartView(std::vector<std::string*> xVals, std::vector<std::v
     
     colors.push_back(CGColorSimpleOrange());
     colors.push_back(CGColorSimpleBlue());
+    colors.push_back(CGColorSimpleCyan());
+    colors.push_back(CGColorSimpleRed());
+    colors.push_back(CGColorSimpleYellow());
+    colors.push_back(CGColorSimpleGreen());
     
     // Set default offsets
     graphXOffset = 40;

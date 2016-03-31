@@ -11,7 +11,7 @@
 #include <GLUT/GLUT.h> //GLUT Library, will make you life easier
 #include <OpenGL/OpenGL.h> //OpenGL Library
 #elif defined _WIN32 || defined _WIN64
-#    include <GL\glut.h>
+#    include <glut.h>
 #endif
 
 

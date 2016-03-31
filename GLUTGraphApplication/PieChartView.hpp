@@ -13,20 +13,20 @@
 #include <string.h>
 #include <vector>
 #include "CGGeometry.hpp"
+#include "Chart.hpp"
 
-class PieChartView {
+class PieChartView: public Chart {
  
-    void drawPieChartInRect(CGRect rect, std::vector<int> values);
+    void drawPieChartInRect(CGRect rect, std::vector<int>* values);
     void drawLegend(CGRect rect);
 public:
     
     
     std::vector<std::string*> xVals;
-    std::vector<int> values;
-    std::vector<CGColor> colors;
+    std::vector<int>* values;
     std::string *title;
     
-    PieChartView(std::vector<std::string*> xVals, std::vector<int> yVals);
-    void draw();
+    PieChartView(std::vector<std::string*> xVals, std::vector<int> *yVals);
+    void draw(CGRect rect);
 };
 #endif /* PieChartView_hpp */

@@ -27,7 +27,6 @@ public:
     
     std::vector<std::string*> xVals;
     std::vector<std::vector<int>*> dataSets;
-    std::vector<CGColor> colors;
     std::vector<std::string*> dataSetTitles;
     
     std::string *title;
